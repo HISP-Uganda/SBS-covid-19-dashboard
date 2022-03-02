@@ -4,13 +4,25 @@ import { Indicator } from "../interfaces";
 import { useSqlView } from "../stores/Queries";
 import { formatter } from "../utils";
 
+type func = (value: number) => string;
+
 const ST: FC<{
   data: any;
   title: string;
   postfix?: string;
+  color?: string;
+  otherColor?: func;
   direction?: "column" | "row";
   tooltip: string;
-}> = ({ title, data, postfix, direction = "column", tooltip = "" }) => {
+}> = ({ 
+  title, 
+  data, 
+  postfix, 
+  direction = "column", 
+  tooltip = "",
+  color,
+  otherColor,
+ }) => {
   return (
     <Stack
       spacing={direction === "column" ? 0 : "10px"}
@@ -31,7 +43,15 @@ const ST: FC<{
         </Text>
       </Tooltip>
 
-      <Text fontSize={"2.0vw"} color="" fontWeight="bold">
+      <Text fontSize={"2.0vw"}
+       color={
+        otherColor !== undefined
+          ? otherColor(Number(data))
+          : !!color
+          ? color
+          : "red"
+      }
+       fontWeight="bold">
         {formatter.format(Number(data))}
         {postfix}
       </Text>
@@ -45,6 +65,8 @@ const SingleValue: FC<{
   postfix?: string;
   hasProgress?: boolean;
   direction?: "column" | "row";
+  color?: string;
+  otherColor?: func;
   processor: (...data: any[]) => any;
   tooltip?: string;
   otherArgs?: any[];
@@ -56,7 +78,9 @@ const SingleValue: FC<{
   direction = "column",
   tooltip = "",
   processor,
+  color,
   otherArgs = [],
+  otherColor,
 }) => {
   const { isLoading, isError, isSuccess, error, data } = useSqlView(indicator);
   return (
@@ -67,6 +91,8 @@ const SingleValue: FC<{
           tooltip={tooltip}
           direction={direction}
           title={title}
+          color={color}
+          otherColor={otherColor}
           data={processor(data, ...otherArgs)}
           postfix={postfix}
         />

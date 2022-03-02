@@ -182,7 +182,7 @@ export const mainDashboard: { [key: string]: func } = {
         parameters: {
           parent
         },
-      },
+      }, 
       denominator: {
         sqlView: "fepCqYMstWu",
         parameters: {},
@@ -294,21 +294,7 @@ export const mainDashboard: { [key: string]: func } = {
       },
     }
   },
-  number_with_shortness_breathing : (parent, startdate, enddate) => {
-    return {
-      numerator: {
-        sqlView: "Ks3uLn0bb17",
-        parameters: {
-          dx: "Ftf2tGyFcnJ",
-          parent, startdate, enddate
-        },
-      },
-      denominator: {
-        sqlView: "fepCqYMstWu",
-        parameters: {},
-      },
-    }
-  },
+  
   percentage_in_schoolbased_care: (parent)=>{
     return {
       numerator: {
@@ -402,6 +388,23 @@ export const mainDashboard: { [key: string]: func } = {
       },
     };
   },
+  number_with_symptoms_bar: (parent, part, startdate, enddate) => {
+    return {
+      numerator: {
+        sqlView: "N3JQAd7YW6g", 
+        parameters: {
+          dx: "l2CJ4fYySx9",
+          parent,
+          part , startdate, enddate
+        },
+      },
+      denominator: {
+        sqlView: "fepCqYMstWu",
+        parameters: {},
+      },
+    };
+  },
+
   referred_for_testing_tested_positive: (parent, part, startdate, enddate) => {
     return {
       numerator: {

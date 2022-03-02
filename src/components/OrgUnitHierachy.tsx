@@ -26,10 +26,9 @@ const query = (parent: any) => {
     },
   };
 };
-// console.log(query)
-const OrgUnitTreeHierachy = () => {
+const OrgUnitTreeSelect = () => {
   const store = useStore($store);
-  const [units, setUnits] = useState(store.userUnits);
+  const [units, setUnits] = useState<any[]>(store.userUnits);
   const engine = useDataEngine();
   const onLoadData = async (parent: any) => {
     try {
@@ -58,8 +57,8 @@ const OrgUnitTreeHierachy = () => {
             return 0;
           });
       });
+      console.log(units)
       setUnits([...units, ...flatten(found)]);
-
     } catch (e) {
       console.log(e);
     }
@@ -113,7 +112,7 @@ const OrgUnitTreeHierachy = () => {
         maxHeight: 400,
         overflow: "auto",
       }}
-      placeholder="Select School"
+      placeholder="Please select health centre"
       onChange={onOrgUnitChange}
       loadData={onLoadData}
       treeData={units}
@@ -121,4 +120,4 @@ const OrgUnitTreeHierachy = () => {
   );
 };
 
-export default OrgUnitTreeHierachy;
+export default OrgUnitTreeSelect;

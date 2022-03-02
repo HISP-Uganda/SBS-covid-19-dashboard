@@ -1,7 +1,7 @@
 const config = {
     type: "app",
     name: "emis-dashboard",
-    title: "SBS Dashbaord",
+    title: "SBS Dashboard",
     entryPoints: {
       app: "./src/AppWrapper.js",
     },

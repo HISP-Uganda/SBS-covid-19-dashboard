@@ -32,12 +32,12 @@ const Speed: FC<{
                 gauge: {
                   shape: "bullet",
                   axis: { range: [null, 100] },
-                  bar: { color: "darkblue", thickness: 0.4 },
+                  bar: { color: "lightseagreen", thickness: 0.5 },
                   steps: [
-                    { range: [0, 50], color: "red" },
-                    { range: [50, 80], color: "yellow" },
-                    { range: [80, 90], color: "limegreen" },
-                    { range: [90, 100], color: "darkgreen" },
+                    { range: [0, 50], color: "#fa4d51" },
+                    { range: [50, 80], color: "#fdae61" },
+                    { range: [80, 95], color: "#a6d96a" },
+                    { range: [95, 100], color: "#1a9641" },
                   ],
                 },
               },

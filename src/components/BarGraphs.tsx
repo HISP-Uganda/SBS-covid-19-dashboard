@@ -9,6 +9,7 @@ import {
 } from "../stores/ProcessData";
 import { mainDashboard } from "../stores/Indicators";
 import { BarGraph } from "./BarGraph";
+import {HorizontalBarGraph} from "./HorizontalBarGraph";
 const BarGraphs: FC<{ yColor: string; bg: string }> = ({ yColor, bg }) => {
   const store = useStore($store);
 
