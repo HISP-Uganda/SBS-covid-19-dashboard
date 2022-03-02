@@ -32,6 +32,7 @@ const BarGraphs: FC<{ yColor: string; bg: string }> = ({ yColor, bg }) => {
         <Tab fontSize="lg">Schools Reporting</Tab>
         <Tab fontSize="lg">Reported COVID-19 positive</Tab>
         <Tab fontSize="lg">Number isolated at school</Tab>
+        <Tab fontSize="lg">Test</Tab>
       </TabList>
       <TabPanels h="100%" w="100%" flex={1}>
         <TabPanel h="100%" w="100%" p={0} m={0}>

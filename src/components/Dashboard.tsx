@@ -406,9 +406,7 @@ const Dashboard = () => {
                       color="blue.500"
                       isTruncated
                     >
-                      PERFORMANCE BY REGION AND OVER TIME (
-                      {store.period[0].format("YYYY-MM-DD")} -{" "}
-                      {store.period[1].format("YYYY-MM-DD")})
+                      PERFORMANCE BY REGION AND OVER TIME ( Last 14 Days / Weeks)
                     </Text>
                   </Flex>
                   <BarGraphs yColor={yColor} bg={bg} />

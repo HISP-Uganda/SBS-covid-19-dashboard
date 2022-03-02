@@ -393,7 +393,7 @@ export const mainDashboard: { [key: string]: func } = {
       numerator: {
         sqlView: "N3JQAd7YW6g", 
         parameters: {
-          dx: "l2CJ4fYySx9",
+          dx: "rrvYimAHvV7",
           parent,
           part , startdate, enddate
         },
