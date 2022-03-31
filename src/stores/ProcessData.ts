@@ -49,20 +49,24 @@ export function process_schools_registered(
 export function processPieData(
   data: any,
   sublevels: { id: string; name: string }[]
+  
 ) {
   return [
     {
       values: Object.values(data.numerators),
       labels: Object.keys(data.numerators).map(
         (ou: string) => sublevels.find(({ id }) => id === ou)?.name
-      ),
+        
+      ), 
       type: "pie",
       textinfo: "label+percent+name",
       hoverinfo: "label+percent+  name",
       textposition: "inside",
       hole: 0.05,
     },
+    // console.log(  sublevels)
   ];
+  
 }
 export function processBarData2(
   data: any,
@@ -133,6 +137,7 @@ export function processTestData(
 export function processTestedPositive(
   data: any,
   sublevels: { id: string; name: string }[],
+  
 ): any[] {
   const x = sublevels.map(({ name }) => name);
 
@@ -197,5 +202,21 @@ export const processSingleR = (data: any) => {
   }
   return 0;
 };
+
+export function processSpiderData(
+  data: any,
+  sublevels: { id: string; name: string }[]
+) {
+  return [
+    {
+      r: Object.values(data.numerators),
+      theta: Object.keys(data.numerators).map(
+        (ou: string) => sublevels.find(({ id }) => id === ou)?.name
+      ),
+      type: "scatterpolar",
+      fill: 'toself',
+    },
+  ];
+}
 
 

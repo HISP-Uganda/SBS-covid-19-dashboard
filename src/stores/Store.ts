@@ -5,12 +5,15 @@ import {
   changeCurrentUser,
   setCurrentLevel,
   setDays,
+  setOugroups,
+  setOulevels,
   setGeojson,
   setLocations,
   setSelectedUnits,
   changePeriod,
   setSublevel,
   setSublevels,
+  setDlgsublevels,
   setWeeks,
   setUserUnits,
   setZoom,
@@ -23,7 +26,11 @@ export const $store = domain
     selectedUnits: "",
     userUnits: [],
     currentLevel: 3,
+    dlgsublevels: [],
     zoom: 6.0,
+    ougroups: "crk61XNeGSo",
+    oulevels: "",
+    // 
     sublevel: 3,
     weeks: [],
     sublevels: [],
@@ -31,6 +38,12 @@ export const $store = domain
   })
   .on(changeCurrentUser, (state, user) => {
     return { ...state, currentUser: user };
+  })
+  .on(setOugroups, (state, ougroups) => {
+    return { ...state, ougroups };
+  })
+  .on(setOulevels, (state, oulevels) => {
+    return { ...state, oulevels };
   })
   .on(setSelectedUnits, (state, selectedUnits) => {
     return { ...state, selectedUnits };
@@ -59,8 +72,11 @@ export const $store = domain
   .on(setDays, (state, days) => {
     return { ...state, days };
   })
-  .on(setSublevels, (state, sublevels) => {
+  .on(setSublevels, (state, sublevels) => { 
     return { ...state, sublevels };
+  })
+  .on(setDlgsublevels, (state, dlgsublevels) => { 
+    return { ...state, dlgsublevels };
   })
   .on(setWeeks, (state, weeks) => {
     return { ...state, weeks };

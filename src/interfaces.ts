@@ -1,5 +1,7 @@
 import {Moment} from 'moment'
 export interface Store {
+    ougroups: string;
+    oulevels: string;
     currentUser: string;
     userUnits: any[];
     period: [Moment,Moment];
@@ -10,6 +12,7 @@ export interface Store {
     currentLevel: number;
     sublevel: number;
     sublevels: any[];
+    dlgsublevels: any[]
     weeks: any[];
   }
   

@@ -9,7 +9,7 @@ import {
 } from "../stores/ProcessData";
 import { mainDashboard } from "../stores/Indicators";
 import { BarGraph } from "./BarGraph";
-import {HorizontalBarGraph} from "./HorizontalBarGraph";
+import LeagueTable from "./LeagueTable";
 const BarGraphs: FC<{ yColor: string; bg: string }> = ({ yColor, bg }) => {
   const store = useStore($store);
 
@@ -29,27 +29,12 @@ const BarGraphs: FC<{ yColor: string; bg: string }> = ({ yColor, bg }) => {
       flexDirection="column"
     >
       <TabList flexDirection={["column", "column", "row"]}>
-        <Tab fontSize="lg">Schools Reporting</Tab>
         <Tab fontSize="lg">Reported COVID-19 positive</Tab>
         <Tab fontSize="lg">Number isolated at school</Tab>
-        <Tab fontSize="lg">Test</Tab>
+        <Tab fontSize="lg">Schools Reporting</Tab>
+        <Tab fontSize="lg">League Table</Tab>
       </TabList>
       <TabPanels h="100%" w="100%" flex={1}>
-        <TabPanel h="100%" w="100%" p={0} m={0}>
-          <BarGraph
-            title="Number Isolated at School"
-            bg={bg}
-            yColor={yColor}
-            indicator={mainDashboard.reporting_schools(
-              store.selectedUnits,
-              store.sublevel,
-              store.period[0].format("YYYY-MM-DD"),
-              store.period[1].format("YYYY-MM-DD")
-            )}
-            processor={processBarData}
-            args={[store.sublevels]}
-          />
-        </TabPanel>
         <TabPanel p={0} m={0} h="100%" w="100%">
           <BarGraph
             title="Reported Positive"
@@ -59,7 +44,8 @@ const BarGraphs: FC<{ yColor: string; bg: string }> = ({ yColor, bg }) => {
               store.selectedUnits,
               store.sublevel,
               store.period[0].format("YYYY-MM-DD"),
-              store.period[1].format("YYYY-MM-DD")
+              store.period[1].format("YYYY-MM-DD"),
+              store.ougroups
             )}
             processor={processBarData}
             args={[store.sublevels]}
@@ -67,17 +53,36 @@ const BarGraphs: FC<{ yColor: string; bg: string }> = ({ yColor, bg }) => {
         </TabPanel>
         <TabPanel h="100%" w="100%" p={0} m={0}>
           <BarGraph
-            title="Number Isolated at School"
+            title="Number Isolated at School"  
             bg={bg}
             yColor={yColor}
             indicator={mainDashboard.number_isolated_school(
               store.selectedUnits,
               store.sublevel,
               store.period[0].format("YYYY-MM-DD"),
-              store.period[1].format("YYYY-MM-DD")
+              store.period[1].format("YYYY-MM-DD"),
+              store.ougroups
             )}
             processor={processTestData}
             args={[store.sublevels]}
+          />
+        </TabPanel>
+        <TabPanel h="100%" w="100%" p={0} m={0}>
+          <BarGraph
+            title="Schools Reporting"
+            bg={bg}
+            yColor={yColor}
+            indicator={mainDashboard.reporting_schools(
+              store.selectedUnits,
+              // store.sublevel,
+              store.ougroups
+            )}
+            processor={processBarData}
+            args={[store.sublevels]}
+          />
+        </TabPanel>
+        <TabPanel h="100%" w="100%" p={0} m={0}>
+          <LeagueTable
           />
         </TabPanel>
       </TabPanels>

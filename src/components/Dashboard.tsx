@@ -11,7 +11,7 @@ import {
   Stack,
   Text,
   useBreakpointValue,
-  VStack,
+  Select,
   useColorModeValue,
   chakra,
   HTMLChakraProps,
@@ -21,6 +21,8 @@ import PieChart from "./PieChart";
 import Donut from "./Donut";
 import Speed from "./Speed";
 import OrgUnitTreeHierachy from "./OrgUnitHierachy";
+import {OrgUnitGroups} from "./OrgUnitGroups";
+import {OrgUnitLevels} from "./OrgUnitLevels";
 import moment from "moment";
 import { useStore } from "effector-react";
 import { useState } from "react";
@@ -30,6 +32,7 @@ import SingleValue from "./SingleValue";
 import BarGraphs from "./BarGraphs";
 import useInterval from "react-useinterval";
 import VisualizeMap from "./VisualizeMap";
+import SpiderChart from "./SpiderChart";
 import { BarGraph } from "./BarGraph";
 import { mainDashboard } from "../stores/Indicators";
 import {
@@ -39,6 +42,7 @@ import {
   calculateNoScreened,
   processReportingPercentage,
   processDonutData,
+  processSpiderData,
   processTestData,
 } from "../stores/ProcessData";
 import { HTMLMotionProps, motion } from "framer-motion";
@@ -91,7 +95,8 @@ const Dashboard = () => {
           store.selectedUnits,
           store.currentLevel + 1,
           store.period[0].format("YYYY-MM-DD"),
-          store.period[1].format("YYYY-MM-DD")
+          store.period[1].format("YYYY-MM-DD"),
+          store.ougroups
         )}
         title="Total Screened"
       />
@@ -112,7 +117,8 @@ const Dashboard = () => {
           store.selectedUnits,
           store.currentLevel + 1,
           store.period[0].format("YYYY-MM-DD"),
-          store.period[1].format("YYYY-MM-DD")
+          store.period[1].format("YYYY-MM-DD"),
+          store.ougroups
         )}
         title=" Number Screened with COVID-19 Symptoms"
       />
@@ -145,6 +151,8 @@ const Dashboard = () => {
             onChange={changePeriod}
           />
           <OrgUnitTreeHierachy />
+          <OrgUnitGroups />
+          <OrgUnitLevels />
         </HStack>
         <Grid
           overflow="auto"
@@ -198,7 +206,7 @@ const Dashboard = () => {
                         <SingleValue
                           processor={processSingleValue}
                           indicator={mainDashboard.total_schools_registered(
-                            store.selectedUnits
+                            store.selectedUnits, store.ougroups
                           )}
                           title="Number of Schools"
                           color="dodgerblue"
@@ -206,7 +214,7 @@ const Dashboard = () => {
                         <SingleValue
                           processor={processSingleValue}
                           indicator={mainDashboard.registered_reporters(
-                            store.selectedUnits
+                            store.selectedUnits, store.ougroups
                           )}
                           title="Schools with Reg Reporters"
                           color="dodgerblue"
@@ -215,8 +223,7 @@ const Dashboard = () => {
                           processor={processSingleValue}
                           indicator={mainDashboard.users_at_school_level(
                             store.selectedUnits,
-                            store.period[0].format("YYYY-MM-DD"),
-                            store.period[1].format("YYYY-MM-DD")
+                            store.ougroups
                           )}
                           title="Reg Users at School level"
                           color="dodgerblue"
@@ -260,7 +267,8 @@ const Dashboard = () => {
                       indicator={mainDashboard.schools_reporting(
                         store.selectedUnits,
                         store.period[0].format("YYYY-MM-DD"),
-                        store.period[1].format("YYYY-MM-DD")
+                        store.period[1].format("YYYY-MM-DD"),
+                        store.ougroups
                       )}
                       title="Schools Reporting"
                       color="lightseagreen"
@@ -271,7 +279,8 @@ const Dashboard = () => {
                         indicator={mainDashboard.report_percentage(
                           store.selectedUnits,
                           store.period[0].format("YYYY-MM-DD"),
-                          store.period[1].format("YYYY-MM-DD")
+                          store.period[1].format("YYYY-MM-DD"),
+                          store.ougroups
                         )}
                         title="% of Schools Reporting"
                       />
@@ -281,7 +290,7 @@ const Dashboard = () => {
               </GridItem>
 
               <GridItem
-                direction="column"
+                // direction="column"
                 justifyContent="center"
                 colSpan={6}
                 bg="white"
@@ -322,7 +331,8 @@ const Dashboard = () => {
                         indicator={mainDashboard.no_screened(
                           store.selectedUnits,
                           store.period[0].format("YYYY-MM-DD"),
-                          store.period[1].format("YYYY-MM-DD")
+                          store.period[1].format("YYYY-MM-DD"),
+                          store.ougroups
                         )}
                         title="screening events"
                         color="darkgreen"
@@ -334,7 +344,8 @@ const Dashboard = () => {
                         indicator={mainDashboard.screened_with_covid_symptoms(
                           store.selectedUnits,
                           store.period[0].format("YYYY-MM-DD"),
-                          store.period[1].format("YYYY-MM-DD")
+                          store.period[1].format("YYYY-MM-DD"),
+                          store.ougroups
                         )}
                         title="# with Symptoms"
                       />
@@ -345,7 +356,8 @@ const Dashboard = () => {
                         indicator={mainDashboard.percentage_with_symptoms(
                           store.selectedUnits,
                           store.period[0].format("YYYY-MM-DD"),
-                          store.period[1].format("YYYY-MM-DD")
+                          store.period[1].format("YYYY-MM-DD"),
+                          store.ougroups
                         )}
                         postfix="%"
                         title="% with Symptoms"
@@ -357,7 +369,8 @@ const Dashboard = () => {
                         indicator={mainDashboard.no_referred_testing(
                           store.selectedUnits,
                           store.period[0].format("YYYY-MM-DD"),
-                          store.period[1].format("YYYY-MM-DD")
+                          store.period[1].format("YYYY-MM-DD"),
+                          store.ougroups
                         )}
                         color="darkgreen"
                         title="No. Referred for Testing"
@@ -369,7 +382,8 @@ const Dashboard = () => {
                         indicator={mainDashboard.number_tested_positive(
                           store.selectedUnits,
                           store.period[0].format("YYYY-MM-DD"),
-                          store.period[1].format("YYYY-MM-DD")
+                          store.period[1].format("YYYY-MM-DD"),
+                          store.ougroups
                         )}
                         title="No. Reported positive"
                       />
@@ -380,7 +394,8 @@ const Dashboard = () => {
                         indicator={mainDashboard.cumulative_positive(
                           store.selectedUnits,
                           store.period[0].format("YYYY-MM-DD"),
-                          store.period[1].format("YYYY-MM-DD")
+                          store.period[1].format("YYYY-MM-DD"),
+                          store.ougroups
                         )}
                         title="Cumulative Positives"
                       />
@@ -406,7 +421,8 @@ const Dashboard = () => {
                       color="blue.500"
                       isTruncated
                     >
-                      PERFORMANCE BY REGION AND OVER TIME ( Last 14 Days / Weeks)
+                      PERFORMANCE BY REGION AND OVER TIME ( Last 14 Days /
+                      Weeks)
                     </Text>
                   </Flex>
                   <BarGraphs yColor={yColor} bg={bg} />
@@ -440,7 +456,8 @@ const Dashboard = () => {
                     indicator={mainDashboard.isolated_students(
                       store.selectedUnits,
                       store.period[0].format("YYYY-MM-DD"),
-                      store.period[1].format("YYYY-MM-DD")
+                      store.period[1].format("YYYY-MM-DD"),
+                      store.ougroups
                     )}
                     postfix="%"
                     title="% Isolated at school"
@@ -450,7 +467,8 @@ const Dashboard = () => {
                     indicator={mainDashboard.percentage_referred_for_testing(
                       store.selectedUnits,
                       store.period[0].format("YYYY-MM-DD"),
-                      store.period[1].format("YYYY-MM-DD")
+                      store.period[1].format("YYYY-MM-DD"),
+                      store.ougroups
                     )}
                     postfix="%"
                     title="% Referred for testing"
@@ -460,7 +478,8 @@ const Dashboard = () => {
                     indicator={mainDashboard.number_isolated_at_school(
                       store.selectedUnits,
                       store.period[0].format("YYYY-MM-DD"),
-                      store.period[1].format("YYYY-MM-DD")
+                      store.period[1].format("YYYY-MM-DD"),
+                      store.ougroups
                     )}
                     title="Isolated at School"
                     color="goldenrod"
@@ -470,7 +489,8 @@ const Dashboard = () => {
                     indicator={mainDashboard.managed_from_school(
                       store.selectedUnits,
                       store.period[0].format("YYYY-MM-DD"),
-                      store.period[1].format("YYYY-MM-DD")
+                      store.period[1].format("YYYY-MM-DD"),
+                      store.ougroups
                     )}
                     title="Cases Managed at School"
                   />
@@ -478,7 +498,7 @@ const Dashboard = () => {
               </GridItem>
             </Grid>
           </GridItem>
-          <GridItem colSpan={[1, 1, 4]} rowSpan={15}>
+          <GridItem colSpan={[1, 4]} rowSpan={15}>
             <Grid templateRows="repeat(6, 1fr)" h="100%" gap={1}>
               <GridItem rowSpan={2}>
                 <Grid
@@ -515,10 +535,12 @@ const Dashboard = () => {
                           store.selectedUnits,
                           store.sublevel,
                           store.period[0].format("YYYY-MM-DD"),
-                          store.period[1].format("YYYY-MM-DD")
+                          store.period[1].format("YYYY-MM-DD"),
+                          store.ougroups
                         )}
                         args={[store.sublevels]}
                       />
+                      
                     </Stack>
                   </GridItem>
                   <GridItem rowSpan={2} bg="gray.200">
@@ -542,8 +564,8 @@ const Dashboard = () => {
                           # with Symptoms by Region
                         </Text>
                       </Flex>
-                      {/* <Donut
-                        processor={processDonutData}
+                      {/* <SpiderChart
+                        processor={processSpiderData}
                         indicator={mainDashboard.per_positives_in_school_based_care(
                           store.selectedUnits,
                           store.sublevel,
@@ -560,7 +582,8 @@ const Dashboard = () => {
                           store.selectedUnits,
                           store.sublevel,
                           store.period[0].format("YYYY-MM-DD"),
-                          store.period[1].format("YYYY-MM-DD")
+                          store.period[1].format("YYYY-MM-DD"),
+                          store.ougroups
                         )}
                         processor={processTestData}
                         args={[store.sublevels]}
@@ -591,7 +614,8 @@ const Dashboard = () => {
                       indicator={mainDashboard.screened(
                         store.selectedUnits,
                         store.period[0].format("YYYY-MM-DD"),
-                        store.period[1].format("YYYY-MM-DD")
+                        store.period[1].format("YYYY-MM-DD"),
+                        store.ougroups
                       )}
                       title="Number Screened"
                       color="darkgreen"
@@ -602,7 +626,8 @@ const Dashboard = () => {
                       indicator={mainDashboard.screened_with_covid_symptoms(
                         store.selectedUnits,
                         store.period[0].format("YYYY-MM-DD"),
-                        store.period[1].format("YYYY-MM-DD")
+                        store.period[1].format("YYYY-MM-DD"),
+                        store.ougroups
                       )}
                       title="Number with Symptoms"
                       color="red"
@@ -613,7 +638,8 @@ const Dashboard = () => {
                       indicator={mainDashboard.no_referred_testing(
                         store.selectedUnits,
                         store.period[0].format("YYYY-MM-DD"),
-                        store.period[1].format("YYYY-MM-DD")
+                        store.period[1].format("YYYY-MM-DD"),
+                        store.ougroups
                       )}
                       title="Number referred for testing"
                       color="darkgreen"
@@ -624,7 +650,8 @@ const Dashboard = () => {
                       indicator={mainDashboard.no_isolated_at_school(
                         store.selectedUnits,
                         store.period[0].format("YYYY-MM-DD"),
-                        store.period[1].format("YYYY-MM-DD")
+                        store.period[1].format("YYYY-MM-DD"),
+                        store.ougroups
                       )}
                       title="Number Isolated at School"
                       color="goldenrod"
@@ -635,7 +662,8 @@ const Dashboard = () => {
                       indicator={mainDashboard.number_tested_positive(
                         store.selectedUnits,
                         store.period[0].format("YYYY-MM-DD"),
-                        store.period[1].format("YYYY-MM-DD")
+                        store.period[1].format("YYYY-MM-DD"),
+                        store.ougroups
                       )}
                       title="No. Reported positive"
                       color="red"
@@ -646,7 +674,8 @@ const Dashboard = () => {
                       indicator={mainDashboard.cases_manages_from_school(
                         store.selectedUnits,
                         store.period[0].format("YYYY-MM-DD"),
-                        store.period[1].format("YYYY-MM-DD")
+                        store.period[1].format("YYYY-MM-DD"),
+                        store.ougroups
                       )}
                       title="Covid Cases Managed from school"
                       color="red"

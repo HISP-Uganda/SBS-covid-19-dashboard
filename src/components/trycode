@@ -1,0 +1,46 @@
+import React from "react";
+import { Select, Box } from "@chakra-ui/react";
+import { FC, useEffect, useState } from "react";
+import { useUserOrgUnitGroup } from "../stores/Queries";
+import { $store } from "../stores/Store";
+import { useStore } from "effector-react";
+import {
+    setOugroups,
+  } from "../stores/Events";
+
+export const OrgUnitGroups: FC<{
+    id: string;
+    title: string;
+  processor: (data: any) => any;
+  
+}> = () => {
+  const [group, setGroup] = useState("");
+  const loadGroups = async () => {
+    try {
+        const response = await fetch('http://localhost:3000/all');
+        const datas = await response.json();
+        const filter = datas.map(data => data.industry);
+        setGroup(filter);
+    } catch (error) {
+        console.log("loadIndustry", error);
+    }
+};
+  const { isLoading, isError, isSuccess, error, data } = useUserOrgUnitGroup();
+  const store = useStore($store);
+  console.log(data)
+  return (
+    <>
+      {/* {isLoading && <Spinner />} */}
+      {isSuccess && (
+        <Select 
+        placeholder="Select Org Unit Group" size="md" width="400px"
+        
+        options = {data}
+        
+      />
+      
+      )}
+      {isError && <Box>{error.message}</Box>}
+    </>
+  );
+};

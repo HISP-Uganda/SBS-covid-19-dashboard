@@ -60,7 +60,6 @@ const OrgUnitTreeSelect = () => {
       console.log(units)
       setUnits([...units, ...flatten(found)]);
     } catch (e) {
-      console.log(e);
     }
   };
 
@@ -112,7 +111,7 @@ const OrgUnitTreeSelect = () => {
         maxHeight: 400,
         overflow: "auto",
       }}
-      placeholder="Please select health centre"
+      placeholder="Please select School"
       onChange={onOrgUnitChange}
       loadData={onLoadData}
       treeData={units}
