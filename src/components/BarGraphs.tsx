@@ -10,6 +10,8 @@ import {
 import { mainDashboard } from "../stores/Indicators";
 import { BarGraph } from "./BarGraph";
 import LeagueTable from "./LeagueTable";
+import StatisticsTable from "./StatisticsTable";
+import LeaguesTable from "./LeaguesTable";
 const BarGraphs: FC<{ yColor: string; bg: string }> = ({ yColor, bg }) => {
   const store = useStore($store);
 
@@ -33,6 +35,7 @@ const BarGraphs: FC<{ yColor: string; bg: string }> = ({ yColor, bg }) => {
         <Tab fontSize="lg">Number isolated at school</Tab>
         <Tab fontSize="lg">Schools Reporting</Tab>
         <Tab fontSize="lg">League Table</Tab>
+        <Tab fontSize="lg">Statistics Table</Tab>
       </TabList>
       <TabPanels h="100%" w="100%" flex={1}>
         <TabPanel p={0} m={0} h="100%" w="100%">
@@ -83,6 +86,10 @@ const BarGraphs: FC<{ yColor: string; bg: string }> = ({ yColor, bg }) => {
         </TabPanel>
         <TabPanel h="100%" w="100%" p={0} m={0}>
           <LeagueTable
+          />
+        </TabPanel>
+        <TabPanel h="100%" w="100%" p={0} m={0}>
+          <StatisticsTable
           />
         </TabPanel>
       </TabPanels>

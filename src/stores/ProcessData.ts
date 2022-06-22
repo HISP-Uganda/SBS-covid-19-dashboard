@@ -1,3 +1,13 @@
+export const processSingleValueTest = (data: any) => {
+  console.log(data)
+  // const den: any = Object.values(data.numerators)[0];
+  // const numerator: number = parseInt(den, 10);
+  // const denominator = parseInt(data.denominators[0], 10);
+  // if (numerator !== NaN && denominator !== NaN && denominator !== 0) {
+  //   return numerator / denominator;
+  // }
+  return 0;
+};
 export const processSingleValue = (data: any) => {
   if (
     Number(data.numerators) !== NaN &&
@@ -8,6 +18,17 @@ export const processSingleValue = (data: any) => {
   }
   return 0;
 };
+export const processSingleValuePercentage = (data: any) => {
+  if (
+    Number(data.numerators) !== NaN &&
+    Number(data.denominators) !== NaN &&
+    Number(data.denominators) !== 0
+  ) {
+    return (Number(data.numerators) / Number(data.denominators)) * 100;
+  }
+  return 0;
+};
+
 export const processSingleRowValue = (data: any) => {
   if (
     Number(data.numerators) !== NaN &&
@@ -49,15 +70,13 @@ export function process_schools_registered(
 export function processPieData(
   data: any,
   sublevels: { id: string; name: string }[]
-  
 ) {
   return [
     {
       values: Object.values(data.numerators),
       labels: Object.keys(data.numerators).map(
         (ou: string) => sublevels.find(({ id }) => id === ou)?.name
-        
-      ), 
+      ),
       type: "pie",
       textinfo: "label+percent+name",
       hoverinfo: "label+percent+  name",
@@ -66,27 +85,24 @@ export function processPieData(
     },
     // console.log(  sublevels)
   ];
-  
 }
 export function processBarData2(
   data: any,
   sublevels: { id: string; name: string }[]
-  ) {
-    return [
-      {
-        values: Object.values(data.numerators),
-        labels: Object.keys(data.numerators).map(
-          (ou: string) => sublevels.find(({ id }) => id === ou)?.name
-        ),
-        type: "bar",
-        textinfo: "label+percent+name",
-        hoverinfo: "label+percent+  name",
-        textposition: "inside",
-        hole: 0.05,
-      },
-    ];
-
-  
+) {
+  return [
+    {
+      values: Object.values(data.numerators),
+      labels: Object.keys(data.numerators).map(
+        (ou: string) => sublevels.find(({ id }) => id === ou)?.name
+      ),
+      type: "bar",
+      textinfo: "label+percent+name",
+      hoverinfo: "label+percent+  name",
+      textposition: "inside",
+      hole: 0.05,
+    },
+  ];
 }
 
 export function processDonutData(
@@ -123,7 +139,6 @@ export function processTestData(
 ): any[] {
   const x = sublevels.map(({ name }) => name);
 
-  
   const referred = {
     name: "Isolated at School",
     x,
@@ -136,8 +151,7 @@ export function processTestData(
 }
 export function processTestedPositive(
   data: any,
-  sublevels: { id: string; name: string }[],
-  
+  sublevels: { id: string; name: string }[]
 ): any[] {
   const x = sublevels.map(({ name }) => name);
 
@@ -188,7 +202,6 @@ export function processBarData(data: any) {
     // hoverinfo: "none",
   };
 
-  
   return [reportedSchools];
 }
 
@@ -214,9 +227,7 @@ export function processSpiderData(
         (ou: string) => sublevels.find(({ id }) => id === ou)?.name
       ),
       type: "scatterpolar",
-      fill: 'toself',
+      fill: "toself",
     },
   ];
 }
-
-

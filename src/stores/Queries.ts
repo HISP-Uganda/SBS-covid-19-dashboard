@@ -6,6 +6,9 @@ import {
   setSublevels,
   setUserUnits,
   setDlgsublevels,
+  setSublevelUnits,
+  setSelectedLevel,
+  setSelectedUnitLevel,
 } from "./Events";
 import { center } from "@turf/turf";
 import { Indicator } from "../interfaces";
@@ -16,7 +19,7 @@ export function useLoader() {
     me: {
       resource: "me.json",
       params: {
-        fields: "organisationUnits[id,level,name,leaf]",
+        fields: "organisationUnits[id,level,name,leaf,children[id,name]]",
       },
     },
     regions: {
@@ -43,6 +46,8 @@ export function useLoader() {
       regions: { organisationUnits: units },
       dlgs: { organisationUnits: unitdlgs },
     }: any = await engine.query(query);
+
+    const level = organisationUnits[0].level;
     const processedUnits = organisationUnits.map((unit: any) => {
       return {
         id: unit.id,
@@ -55,13 +60,18 @@ export function useLoader() {
     });
     setUserUnits(processedUnits);
     setSelectedUnits(processedUnits[0].id);
+    setSelectedLevel(String(parseInt(level, 10) + 1));
+    setSelectedUnitLevel(level);
     setSublevels(units);
+    setSublevelUnits(
+      organisationUnits.flatMap(({ children }: any) => children)
+    );
     setDlgsublevels(unitdlgs);
     return true;
   });
 }
 
-export function useOrganizationSubLevel(selectedUnits: string) {
+export function useOrganizationSubLevel(selectedUnits: string, level: string) {
   const engine = useDataEngine();
   const query = {
     ous: {
@@ -170,7 +180,7 @@ export function useOrgUnitLevel() {
     response: {
       resource: "organisationUnitLevels.json",
       params: {
-        fields: "id,name",
+        fields: "id,name,level",
       },
     },
   };

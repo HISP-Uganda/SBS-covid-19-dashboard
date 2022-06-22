@@ -6,9 +6,11 @@ import { flatten } from "lodash";
 import { useState } from "react";
 import {
   setCurrentLevel,
+  setSelectedUnitLevel,
   setSelectedUnits,
   setSublevel,
   setSublevels,
+  setSublevelUnits,
   setZoom,
 } from "../stores/Events";
 import { $store } from "../stores/Store";
@@ -57,12 +59,9 @@ const OrgUnitTreeSelect = () => {
             return 0;
           });
       });
-      console.log(units)
       setUnits([...units, ...flatten(found)]);
-    } catch (e) {
-    }
+    } catch (e) {}
   };
-
   const onOrgUnitChange = async (value: string) => {
     const unitObj = {
       1: 3,
@@ -78,13 +77,26 @@ const OrgUnitTreeSelect = () => {
     };
     const unit = units.find((u: any) => u.id === value);
     setCurrentLevel(unitObj[unit.level] || 3);
+    setSelectedUnitLevel(unitObj[unit.level]);
     setSelectedUnits(value);
     setSublevel(unit.level + 2);
     setZoom(zooms[unit.level] || 6.0);
 
     const {
       response: { organisationUnits },
-    }: any = await engine.query(query(unit));
+      sublevelUnits,
+    }: any = await engine.query({
+      ...query(unit),
+      sublevelUnits: {
+        resource: `organisationUnits/${value}.json`,
+        params: {
+          fields: "id,name",
+          level: parseInt(store.selectedLevel, 10) - unit.level,
+          paging: false,
+        },
+      },
+    });
+    setSublevelUnits(sublevelUnits.organisationUnits);
     const found = organisationUnits.map((unit: any) => {
       return unit.children.sort((a: any, b: any) => {
         if (a.name > b.name) {
@@ -111,7 +123,7 @@ const OrgUnitTreeSelect = () => {
         maxHeight: 400,
         overflow: "auto",
       }}
-      placeholder="Please select School"
+      placeholder="Please select facility"
       onChange={onOrgUnitChange}
       loadData={onLoadData}
       treeData={units}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   Table,
   Thead,
@@ -9,7 +9,11 @@ import {
   TableCaption,
   Box,
   Spinner,
+  Button,
+  Flex,
 } from "@chakra-ui/react";
+//import { DownloadTableExcel } from 'react-export-table-to-excel';
+import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import { useStore } from "effector-react";
 import { $store } from "../stores/Store";
 import SimpleSingleValue from "./SimpleSingleValue";
@@ -17,38 +21,51 @@ import { mainDashboard } from "../stores/Indicators";
 import {
   processSingleValue,
   processReportingPercentage,
+  processSingleValueTest,
 } from "../stores/ProcessData";
 import { useOrganizationSubLevel } from "../stores/Queries";
 
 const LeagueTable = () => {
   const store = useStore($store);
-  const { isLoading, isSuccess, isError, data, error } =
-    useOrganizationSubLevel(store.selectedUnits);
+
   return (
     <>
-      {isLoading && <Spinner />}
-      {isSuccess && data && (
-        <Box overflowY="auto" maxHeight="530px" display="flex">
-        <Table variant="striped" colorScheme="teal" size="sm" width="40px" height="10px">
+      <Button colorScheme="blue">
+        <ReactHTMLTableToExcel
+          id="test-table-xls-button"
+          className="download-table-xls-button"
+          table="table-to-xls"
+          filename="League table"
+          sheet="tablexls"
+          buttonText="Download as XLS"
+        />
+      </Button>
+      <Box overflowY="auto" maxHeight="530px" display="flex">
+        <Flex alignContent="right"> </Flex>
+
+        <Table variant="striped" colorScheme="teal" size="sm" id="table-to-xls">
           <Thead>
             <Tr>
               <Th>Organisation</Th>
               <Th>No. of schools </Th>
               <Th>No. of reporters</Th>
               <Th>No. of schools with reporters</Th>
-              <Th>No. of reports</Th>
               <Th>No. of schools reporting</Th>
+              
+              {/* <Th>No. of reports</Th> */}
+              
               <Th>% of schools reporting </Th>
             </Tr>
           </Thead>
           <Tbody>
-            {data.map((ou: any) => (
+            {store.sublevelUnits.map((ou: any) => (
               <Tr key={ou.id}>
                 <Td>{ou.name}</Td>
                 <Td>
                   <SimpleSingleValue
                     processor={processSingleValue}
-                    indicator={mainDashboard.total_schools_registered(
+                    indicator={mainDashboard.totalSchoolsRegistered(
+                      parseInt(store.selectedLevel, 10) + 1,
                       ou.id,
                       store.ougroups
                     )}
@@ -57,28 +74,47 @@ const LeagueTable = () => {
                 </Td>
                 <Td>
                   <SimpleSingleValue
-                   processor={processSingleValue}
-                   indicator={mainDashboard.users_at_school_level(
-                     ou.id,
-                     store.ougroups
-                   )}
-                   color="dodgerblue"
+                    processor={processSingleValue}
+                    indicator={mainDashboard.users_at_school_level(
+                      parseInt(store.selectedLevel, 10) + 1,
+                      ou.id,
+                      store.ougroups
+                      
+                    )}
+                    color="dodgerblue"
                   />
                 </Td>
                 <Td>
                   <SimpleSingleValue
                     processor={processSingleValue}
                     indicator={mainDashboard.registered_reporters(
+                      parseInt(store.selectedLevel, 10) + 1,
                       ou.id,
-                      store.selectedUnits, store.ougroups
+                      store.ougroups
+                    )}
+                    color="dodgerblue"
+                  />
+                  </Td>
+                  <Td>
+                  <SimpleSingleValue
+                    processor={processSingleValue}
+                    indicator={mainDashboard.schools_reporting(
+                      parseInt(store.selectedLevel, 10) + 1,
+                      ou.id,
+                      store.period[0].format("YYYY-MM-DD"),
+                      store.period[1].format("YYYY-MM-DD"),
+                      store.ougroups,
                     )}
                     color="dodgerblue"
                   />
                 </Td>
-                <Td>
+                
+               
+                {/* <Td>
                   <SimpleSingleValue
                     processor={processSingleValue}
-                    indicator={mainDashboard.schools_reporting(
+                    indicator={mainDashboard.reporting_schools(
+                      
                       ou.id,
                       store.period[0].format("YYYY-MM-DD"),
                       store.period[1].format("YYYY-MM-DD"),
@@ -86,23 +122,12 @@ const LeagueTable = () => {
                     )}
                     color="dodgerblue"
                   />
-                </Td>
-                <Td>
-                  <SimpleSingleValue
-                    processor={processSingleValue}
-                    indicator={mainDashboard.schools_reporting(
-                      ou.id,
-                      store.period[0].format("YYYY-MM-DD"),
-                      store.period[1].format("YYYY-MM-DD"),
-                      store.ougroups
-                    )}
-                    color="dodgerblue"
-                  />
-                </Td>
+                </Td> */}
                 <Td>
                   <SimpleSingleValue
                     processor={processReportingPercentage}
                     indicator={mainDashboard.report_percentage(
+                      parseInt(store.selectedLevel, 10) + 1,
                       ou.id,
                       store.period[0].format("YYYY-MM-DD"),
                       store.period[1].format("YYYY-MM-DD"),
@@ -115,9 +140,7 @@ const LeagueTable = () => {
             ))}
           </Tbody>
         </Table>
-        </Box>
-      )}
-      {isError && <Box>{error.message}</Box>}
+      </Box>
     </>
   );
 };

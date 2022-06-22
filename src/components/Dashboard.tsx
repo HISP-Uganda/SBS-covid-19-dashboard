@@ -44,6 +44,7 @@ import {
   processDonutData,
   processSpiderData,
   processTestData,
+  processSingleValuePercentage
 } from "../stores/ProcessData";
 import { HTMLMotionProps, motion } from "framer-motion";
 import Marquee from "react-fast-marquee";
@@ -80,31 +81,31 @@ const Dashboard = () => {
 
   const maps = [
     <MotionBox
-      key="screened"
-      h="100%"
-      initial={{
-        opacity: 0,
-      }}
-      animate={{
-        opacity: 1,
-      }}
-      transition={{ duration: 1 }}
-    >
-      <VisualizeMap
-        indicator={mainDashboard.screened_events(
-          store.selectedUnits,
-          store.currentLevel + 1,
-          store.period[0].format("YYYY-MM-DD"),
-          store.period[1].format("YYYY-MM-DD"),
-          store.ougroups
-        )}
-        title="Total Screened"
-      />
-    </MotionBox>,
-    <MotionBox
-      key="symptoms"
-      h="100%"
-      initial={{
+       key="screened"
+       h="100%"
+       initial={{
+         opacity: 0,
+       }}
+       animate={{
+         opacity: 1,
+       }}
+       transition={{ duration: 1 }}
+     >
+       <VisualizeMap
+         indicator={mainDashboard.screened_events(
+           store.selectedUnits,
+           store.currentLevel + 1,
+           store.period[0].format("YYYY-MM-DD"),
+           store.period[1].format("YYYY-MM-DD"),
+           store.ougroups
+         )}
+         title="Total Screened"
+       />
+     </MotionBox>,
+     <MotionBox
+       key="symptoms"
+       h="100%"
+       initial={{
         opacity: 0,
       }}
       animate={{
@@ -123,6 +124,50 @@ const Dashboard = () => {
         title=" Number Screened with COVID-19 Symptoms"
       />
     </MotionBox>,
+    <MotionBox
+    key="symptoms"
+    h="100%"
+    initial={{
+      opacity: 0,
+    }}
+    animate={{
+      opacity: 1,
+    }}
+    transition={{ duration: 1 }}
+  >
+    <VisualizeMap  
+      indicator={mainDashboard.cumulativePositiveMap(
+        store.selectedUnits,
+        store.currentLevel + 1,
+        store.period[0].format("YYYY-MM-DD"),
+        store.period[1].format("YYYY-MM-DD"),
+        store.ougroups
+      )}
+      title=" Cumulative Positives"
+    />
+  </MotionBox>,
+  <MotionBox
+    key="symptoms"
+    h="100%"
+    initial={{
+      opacity: 0,
+    }}
+    animate={{
+      opacity: 1,
+    }}
+    transition={{ duration: 1 }}
+  >
+    <VisualizeMap  
+      indicator={mainDashboard.withSymptoms(
+        store.selectedUnits,
+        store.currentLevel + 1,
+        store.period[0].format("YYYY-MM-DD"),
+        store.period[1].format("YYYY-MM-DD"),
+        store.ougroups
+      )}
+      title="Number With Symptoms"
+    />
+  </MotionBox>,
   ];
 
   const incrementMaps = () => setIndex((s: number) => (s + 1) % maps.length);
@@ -136,7 +181,7 @@ const Dashboard = () => {
             alt="Ministry of Health"
             boxSize="48px"
           />
-          <Text fontSize="4xl" fontWeight="bold" color="red.500">
+          <Text fontSize="3xl" fontWeight="bold" color="red.500">
             SBS COVID-19 Dashboard
           </Text>
           <Spacer />
@@ -213,7 +258,7 @@ const Dashboard = () => {
                         />
                         <SingleValue
                           processor={processSingleValue}
-                          indicator={mainDashboard.registered_reporters(
+                          indicator={mainDashboard.registered_reporters1(
                             store.selectedUnits, store.ougroups
                           )}
                           title="Schools with Reg Reporters"
@@ -221,7 +266,7 @@ const Dashboard = () => {
                         />
                         <SingleValue
                           processor={processSingleValue}
-                          indicator={mainDashboard.users_at_school_level(
+                          indicator={mainDashboard.UsersAtSchoolLevel(
                             store.selectedUnits,
                             store.ougroups
                           )}
@@ -264,7 +309,7 @@ const Dashboard = () => {
                   >
                     <SingleValue
                       processor={processSingleValue}
-                      indicator={mainDashboard.schools_reporting(
+                      indicator={mainDashboard.schools_reporting1(
                         store.selectedUnits,
                         store.period[0].format("YYYY-MM-DD"),
                         store.period[1].format("YYYY-MM-DD"),
@@ -276,7 +321,7 @@ const Dashboard = () => {
                     <Box w="350px">
                       <Speed
                         processor={processReportingPercentage}
-                        indicator={mainDashboard.report_percentage(
+                        indicator={mainDashboard.reportPercentage(
                           store.selectedUnits,
                           store.period[0].format("YYYY-MM-DD"),
                           store.period[1].format("YYYY-MM-DD"),
@@ -347,12 +392,12 @@ const Dashboard = () => {
                           store.period[1].format("YYYY-MM-DD"),
                           store.ougroups
                         )}
-                        title="# with Symptoms"
+                        title="# with Symptoms" 
                       />
                     </Box>
                     <Box w="350px">
                       <SingleValue
-                        processor={processSingleValue}
+                        processor={processSingleValuePercentage}
                         indicator={mainDashboard.percentage_with_symptoms(
                           store.selectedUnits,
                           store.period[0].format("YYYY-MM-DD"),
@@ -452,7 +497,7 @@ const Dashboard = () => {
                     </Text>
                   </Flex>
                   <SingleValue
-                    processor={processSingleValue}
+                    processor={processSingleValuePercentage}
                     indicator={mainDashboard.isolated_students(
                       store.selectedUnits,
                       store.period[0].format("YYYY-MM-DD"),
@@ -463,7 +508,7 @@ const Dashboard = () => {
                     title="% Isolated at school"
                   />
                   <SingleValue
-                    processor={processSingleValue}
+                    processor={processSingleValuePercentage}
                     indicator={mainDashboard.percentage_referred_for_testing(
                       store.selectedUnits,
                       store.period[0].format("YYYY-MM-DD"),
