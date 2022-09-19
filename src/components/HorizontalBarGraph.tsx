@@ -2,6 +2,7 @@ import {
     Box, Spinner,
     Stack
   } from "@chakra-ui/react";
+import React from "react";
   import { FC } from "react";
   import Plot from "react-plotly.js";
   import { Indicator } from "../interfaces";

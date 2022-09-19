@@ -19,7 +19,7 @@ export function useLoader() {
     me: {
       resource: "me.json",
       params: {
-        fields: "organisationUnits[id,level,name,leaf,children[id,name]]",
+        fields: "dataViewOrganisationUnits[id,level,name,leaf,children[id,name]]",
       },
     },
     regions: {
@@ -42,13 +42,13 @@ export function useLoader() {
   };
   return useQuery<any, Error>("initial", async () => {
     const {
-      me: { organisationUnits },
+      me: { dataViewOrganisationUnits },
       regions: { organisationUnits: units },
       dlgs: { organisationUnits: unitdlgs },
     }: any = await engine.query(query);
 
-    const level = organisationUnits[0].level;
-    const processedUnits = organisationUnits.map((unit: any) => {
+    const level = dataViewOrganisationUnits[0].level;
+    const processedUnits = dataViewOrganisationUnits.map((unit: any) => {
       return {
         id: unit.id,
         pId: unit.pId || "",
@@ -64,7 +64,7 @@ export function useLoader() {
     setSelectedUnitLevel(level);
     setSublevels(units);
     setSublevelUnits(
-      organisationUnits.flatMap(({ children }: any) => children)
+      dataViewOrganisationUnits.flatMap(({ children }: any) => children)
     );
     setDlgsublevels(unitdlgs);
     return true;
@@ -200,24 +200,24 @@ export function useSqlView(
   ougroups = ""
 ) {
   const engine = useDataEngine();
-  const numeratorKeys = Object.entries(indicator.numerator.parameters).flatMap(
+  const numeratorKeys = Object.entries(indicator.numerator.parameters || {}).flatMap(
     (val) => {
       return val;
     }
   );
   const denominatorKeys = Object.entries(
-    indicator.denominator.parameters
+    indicator.denominator.parameters || {}
   ).flatMap((val) => {
     return val;
   });
 
-  const numeratorConditions = Object.entries(indicator.numerator.parameters)
+  const numeratorConditions = Object.entries(indicator.numerator.parameters || {})
     .map(([col, val]) => {
       return `var=${col}:${val}`;
     })
     .join("&");
 
-  const denominatorConditions = Object.entries(indicator.denominator.parameters)
+  const denominatorConditions = Object.entries(indicator.denominator.parameters || {})
     .map(([col, val]) => {
       return `var=${col}:${val}`;
     })

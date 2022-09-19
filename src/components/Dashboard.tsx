@@ -21,8 +21,8 @@ import PieChart from "./PieChart";
 import Donut from "./Donut";
 import Speed from "./Speed";
 import OrgUnitTreeHierachy from "./OrgUnitHierachy";
-import {OrgUnitGroups} from "./OrgUnitGroups";
-import {OrgUnitLevels} from "./OrgUnitLevels";
+import { OrgUnitGroups } from "./OrgUnitGroups";
+import { OrgUnitLevels } from "./OrgUnitLevels";
 import moment from "moment";
 import { useStore } from "effector-react";
 import { useState } from "react";
@@ -44,7 +44,7 @@ import {
   processDonutData,
   processSpiderData,
   processTestData,
-  processSingleValuePercentage
+  processSingleValuePercentage,
 } from "../stores/ProcessData";
 import { HTMLMotionProps, motion } from "framer-motion";
 import Marquee from "react-fast-marquee";
@@ -81,31 +81,31 @@ const Dashboard = () => {
 
   const maps = [
     <MotionBox
-       key="screened"
-       h="100%"
-       initial={{
-         opacity: 0,
-       }}
-       animate={{
-         opacity: 1,
-       }}
-       transition={{ duration: 1 }}
-     >
-       <VisualizeMap
-         indicator={mainDashboard.screened_events(
-           store.selectedUnits,
-           store.currentLevel + 1,
-           store.period[0].format("YYYY-MM-DD"),
-           store.period[1].format("YYYY-MM-DD"),
-           store.ougroups
-         )}
-         title="Total Screened"
-       />
-     </MotionBox>,
-     <MotionBox
-       key="symptoms"
-       h="100%"
-       initial={{
+      key="screened"
+      h="100%"
+      initial={{
+        opacity: 0,
+      }}
+      animate={{
+        opacity: 1,
+      }}
+      transition={{ duration: 1 }}
+    >
+      <VisualizeMap
+        indicator={mainDashboard.screened_events(
+          store.selectedUnits,
+          store.currentLevel + 1,
+          store.period[0].format("YYYY-MM-DD"),
+          store.period[1].format("YYYY-MM-DD"),
+          store.ougroups
+        )}
+        title="Total Screened"
+      />
+    </MotionBox>,
+    <MotionBox
+      key="symptoms"
+      h="100%"
+      initial={{
         opacity: 0,
       }}
       animate={{
@@ -125,65 +125,67 @@ const Dashboard = () => {
       />
     </MotionBox>,
     <MotionBox
-    key="symptoms"
-    h="100%"
-    initial={{
-      opacity: 0,
-    }}
-    animate={{
-      opacity: 1,
-    }}
-    transition={{ duration: 1 }}
-  >
-    <VisualizeMap  
-      indicator={mainDashboard.cumulativePositiveMap(
-        store.selectedUnits,
-        store.currentLevel + 1,
-        store.period[0].format("YYYY-MM-DD"),
-        store.period[1].format("YYYY-MM-DD"),
-        store.ougroups
-      )}
-      title=" Cumulative Positives"
-    />
-  </MotionBox>,
-  <MotionBox
-    key="symptoms"
-    h="100%"
-    initial={{
-      opacity: 0,
-    }}
-    animate={{
-      opacity: 1,
-    }}
-    transition={{ duration: 1 }}
-  >
-    <VisualizeMap  
-      indicator={mainDashboard.withSymptoms(
-        store.selectedUnits,
-        store.currentLevel + 1,
-        store.period[0].format("YYYY-MM-DD"),
-        store.period[1].format("YYYY-MM-DD"),
-        store.ougroups
-      )}
-      title="Number With Symptoms"
-    />
-  </MotionBox>,
+      key="symptoms"
+      h="100%"
+      initial={{
+        opacity: 0,
+      }}
+      animate={{
+        opacity: 1,
+      }}
+      transition={{ duration: 1 }}
+    >
+      <VisualizeMap
+        indicator={mainDashboard.cumulativePositiveMap(
+          store.selectedUnits,
+          store.currentLevel + 1,
+          store.period[0].format("YYYY-MM-DD"),
+          store.period[1].format("YYYY-MM-DD"),
+          store.ougroups
+        )}
+        title=" Cumulative Positives"
+      />
+    </MotionBox>,
+    <MotionBox
+      key="symptoms"
+      h="100%"
+      initial={{
+        opacity: 0,
+      }}
+      animate={{
+        opacity: 1,
+      }}
+      transition={{ duration: 1 }}
+    >
+      <VisualizeMap
+        indicator={mainDashboard.withSymptoms(
+          store.selectedUnits,
+          store.currentLevel + 1,
+          store.period[0].format("YYYY-MM-DD"),
+          store.period[1].format("YYYY-MM-DD"),
+          store.ougroups
+        )}
+        title="Number With Symptoms"
+      />
+    </MotionBox>,
   ];
 
   const incrementMaps = () => setIndex((s: number) => (s + 1) % maps.length);
   useInterval(incrementMaps, 1000 * 30);
   return (
     <FullScreen handle={handle}>
-      <Box bg={realBg} p="5px">
+      <Stack bg={realBg} p="5px">
         <HStack h="60px">
           <Image
             src="https://raw.githubusercontent.com/HISP-Uganda/covid-dashboard/master/src/images/Coat_of_arms_of_Uganda.svg"
             alt="Ministry of Health"
             boxSize="48px"
           />
-          <Text fontSize="3xl" fontWeight="bold" color="red.500">
-            SBS COVID-19 Dashboard
-          </Text>
+          <Flex minWidth="max-content">
+            <Text fontSize="3xl" fontWeight="bold" color="red.500">
+              SBS COVID-19 Dashboard
+            </Text>
+          </Flex>
           <Spacer />
           {handle.active ? (
             <Button onClick={handle.exit}>Exit fullscreen</Button>
@@ -196,8 +198,8 @@ const Dashboard = () => {
             onChange={changePeriod}
           />
           <OrgUnitTreeHierachy />
-          <OrgUnitGroups />
           <OrgUnitLevels />
+          <OrgUnitGroups />
         </HStack>
         <Grid
           overflow="auto"
@@ -251,7 +253,8 @@ const Dashboard = () => {
                         <SingleValue
                           processor={processSingleValue}
                           indicator={mainDashboard.total_schools_registered(
-                            store.selectedUnits, store.ougroups
+                            store.selectedUnits,
+                            store.ougroups
                           )}
                           title="Number of Schools"
                           color="dodgerblue"
@@ -259,7 +262,10 @@ const Dashboard = () => {
                         <SingleValue
                           processor={processSingleValue}
                           indicator={mainDashboard.registered_reporters1(
-                            store.selectedUnits, store.ougroups
+                            store.selectedUnits,
+                            store.ougroups,
+                            store.period[0].format("YYYY-MM-DD"),
+                            store.period[1].format("YYYY-MM-DD")
                           )}
                           title="Schools with Reg Reporters"
                           color="dodgerblue"
@@ -268,7 +274,9 @@ const Dashboard = () => {
                           processor={processSingleValue}
                           indicator={mainDashboard.UsersAtSchoolLevel(
                             store.selectedUnits,
-                            store.ougroups
+                            store.ougroups,
+                            store.period[0].format("YYYY-MM-DD"),
+                            store.period[1].format("YYYY-MM-DD")
                           )}
                           title="Reg Users at School level"
                           color="dodgerblue"
@@ -337,9 +345,10 @@ const Dashboard = () => {
               <GridItem
                 // direction="column"
                 justifyContent="center"
-                colSpan={6}
+                colSpan={8}
                 bg="white"
                 justifyItems="center"
+                w="99.4%"
               >
                 <Stack spacing={0} h="100%">
                   <Flex
@@ -370,7 +379,7 @@ const Dashboard = () => {
                     h="100%"
                     flex={1}
                   >
-                    <Box w="350px">
+                    {/* <Box w="350px">
                       <SingleValue
                         processor={calculateNoScreened}
                         indicator={mainDashboard.no_screened(
@@ -382,7 +391,7 @@ const Dashboard = () => {
                         title="screening events"
                         color="darkgreen"
                       />
-                    </Box>
+                    </Box> */}
                     <Box w="350px">
                       <SingleValue
                         processor={processSingleValue}
@@ -392,10 +401,10 @@ const Dashboard = () => {
                           store.period[1].format("YYYY-MM-DD"),
                           store.ougroups
                         )}
-                        title="# with Symptoms" 
+                        title="# with Symptoms"
                       />
                     </Box>
-                    <Box w="350px">
+                    {/* <Box w="350px">
                       <SingleValue
                         processor={processSingleValuePercentage}
                         indicator={mainDashboard.percentage_with_symptoms(
@@ -407,7 +416,7 @@ const Dashboard = () => {
                         postfix="%"
                         title="% with Symptoms"
                       />
-                    </Box>
+                    </Box> */}
                     <Box w="350px">
                       <SingleValue
                         processor={processSingleValue}
@@ -422,6 +431,31 @@ const Dashboard = () => {
                       />
                     </Box>
                     <Box w="350px">
+                    <SingleValue
+                    processor={processSingleValue}
+                    indicator={mainDashboard.numberTested(
+                      store.selectedUnits,
+                      store.period[0].format("YYYY-MM-DD"),
+                      store.period[1].format("YYYY-MM-DD"),
+                      store.ougroups
+                    )}
+                    title="Number Tested"
+                  />
+                    </Box>
+                    <Box w="350px">
+                    <SingleValue
+                    processor={processSingleValuePercentage}
+                    indicator={mainDashboard.percentage_referred_for_testing(
+                      store.selectedUnits,
+                      store.period[0].format("YYYY-MM-DD"),
+                      store.period[1].format("YYYY-MM-DD"),
+                      store.ougroups
+                    )}
+                    postfix="%"
+                    title="% Referred for testing"
+                  />
+                    </Box>
+                    <Box w="350px">
                       <SingleValue
                         processor={processSingleValue}
                         indicator={mainDashboard.number_tested_positive(
@@ -430,11 +464,82 @@ const Dashboard = () => {
                           store.period[1].format("YYYY-MM-DD"),
                           store.ougroups
                         )}
-                        title="No. Reported positive"
+                        title="No. Reported +ve"
                       />
                     </Box>
                     <Box w="350px">
                       <SingleValue
+                        processor={processSingleValuePercentage}
+                        indicator={mainDashboard.positivityRate(
+                          store.selectedUnits,
+                          store.period[0].format("YYYY-MM-DD"),
+                          store.period[1].format("YYYY-MM-DD"),
+                          store.ougroups
+                        )}
+                        postfix="%"
+                        title="Positivity Rate"
+                      />
+                    </Box>
+                    {/* <Box w="350px">
+                      <SingleValue
+                        processor={processSingleValue}
+                        indicator={mainDashboard.cumulativeReferredForTesting(
+                          store.selectedUnits,
+                          store.period[0].format("YYYY-MM-DD"),
+                          store.period[1].format("YYYY-MM-DD"),
+                          store.ougroups
+                        )}
+                        title="C. Referred for Testing"
+                      />
+                    </Box> */}
+                    
+                  </Flex>
+                </Stack>
+              </GridItem>
+
+              <GridItem
+                rowSpan={5}
+                colSpan={5}
+                bg="white"
+                h="100%" w="100%"
+              >
+                <Stack spacing={0} h="100%">
+                <Flex
+                  alignItems="center"
+                  bg="gray.200"
+                  h="40px"
+                  alignContent="center"
+                  justifyItems="center"
+                >
+                  <Text
+                    pl="25px"
+                    h="20px"
+                    textTransform="uppercase"
+                    fontWeight="bold"
+                    fontSize="0.8vw"
+                    color="blue.500"
+                    isTruncated
+                  >
+                    PERFORMANCE BY REGION AND OVER TIME ( Last 14 Days / Weeks)
+                  </Text>
+                </Flex>
+                <BarGraphs yColor={yColor} bg={bg} />
+                </Stack>
+              </GridItem>
+              <GridItem rowSpan={5} bg="white" h="100%" w="100%">
+                <Stack h="100%" spacing={0}>
+                <SingleValue
+                        processor={processSingleValuePercentage}
+                        indicator={mainDashboard.percentageTested(
+                          store.selectedUnits,
+                          store.period[0].format("YYYY-MM-DD"),
+                          store.period[1].format("YYYY-MM-DD"),
+                          store.ougroups
+                        )}
+                        postfix="%"
+                        title="% Tested"
+                      />
+                <SingleValue
                         processor={processSingleValue}
                         indicator={mainDashboard.cumulative_positive(
                           store.selectedUnits,
@@ -442,39 +547,19 @@ const Dashboard = () => {
                           store.period[1].format("YYYY-MM-DD"),
                           store.ougroups
                         )}
-                        title="Cumulative Positives"
+                        title="Cum. Positives"
                       />
-                    </Box>
-                  </Flex>
-                </Stack>
-              </GridItem>
-              <GridItem rowSpan={4} colSpan={5} bg="white" h="100%" w="100%">
-                <Stack spacing={0} h="100%">
-                  <Flex
-                    alignItems="center"
-                    bg="gray.200"
-                    h="30px"
-                    alignContent="center"
-                    justifyItems="center"
-                  >
-                    <Text
-                      pl="25px"
-                      h="20px"
-                      textTransform="uppercase"
-                      fontWeight="bold"
-                      fontSize="0.8vw"
-                      color="blue.500"
-                      isTruncated
-                    >
-                      PERFORMANCE BY REGION AND OVER TIME ( Last 14 Days /
-                      Weeks)
-                    </Text>
-                  </Flex>
-                  <BarGraphs yColor={yColor} bg={bg} />
-                </Stack>
-              </GridItem>
-              <GridItem rowSpan={4} bg="white" h="100%" w="100%">
-                <Stack h="100%" spacing={0}>
+                      <SingleValue
+                        processor={processSingleValuePercentage}
+                        indicator={mainDashboard.cumulativePositivityRate(
+                          store.selectedUnits,
+                          store.period[0].format("YYYY-MM-DD"),
+                          store.period[1].format("YYYY-MM-DD"),
+                          store.ougroups
+                        )}
+                        postfix="%"
+                        title="Cum. Positivity Rate"
+                      />
                   <Flex
                     alignItems="center"
                     bg="gray.200"
@@ -491,12 +576,22 @@ const Dashboard = () => {
                       fontSize="0.7vw"
                       color="blue.500"
                     >
-                      School based Care <br />(
+                      Care <br />(
                       {store.period[0].format("YYYY-MM-DD")} -{" "}
                       {store.period[1].format("YYYY-MM-DD")})
                     </Text>
                   </Flex>
                   <SingleValue
+                    processor={processSingleValue}
+                    indicator={mainDashboard.casesHospitalized(
+                      store.selectedUnits,
+                      store.period[0].format("YYYY-MM-DD"),
+                      store.period[1].format("YYYY-MM-DD"),
+                      store.ougroups
+                    )}
+                    title="Cases Hospitalized"
+                  />
+                  {/* <SingleValue
                     processor={processSingleValuePercentage}
                     indicator={mainDashboard.isolated_students(
                       store.selectedUnits,
@@ -506,27 +601,16 @@ const Dashboard = () => {
                     )}
                     postfix="%"
                     title="% Isolated at school"
-                  />
-                  <SingleValue
-                    processor={processSingleValuePercentage}
-                    indicator={mainDashboard.percentage_referred_for_testing(
-                      store.selectedUnits,
-                      store.period[0].format("YYYY-MM-DD"),
-                      store.period[1].format("YYYY-MM-DD"),
-                      store.ougroups
-                    )}
-                    postfix="%"
-                    title="% Referred for testing"
-                  />
+                  /> */}
                   <SingleValue
                     processor={processSingleValue}
-                    indicator={mainDashboard.number_isolated_at_school(
+                    indicator={mainDashboard.casesInHomeBasedCare(
                       store.selectedUnits,
                       store.period[0].format("YYYY-MM-DD"),
                       store.period[1].format("YYYY-MM-DD"),
                       store.ougroups
                     )}
-                    title="Isolated at School"
+                    title="Home Based Care"
                     color="goldenrod"
                   />
                   <SingleValue
@@ -537,7 +621,7 @@ const Dashboard = () => {
                       store.period[1].format("YYYY-MM-DD"),
                       store.ougroups
                     )}
-                    title="Cases Managed at School"
+                    title="School Based Care"
                   />
                 </Stack>
               </GridItem>
@@ -585,7 +669,6 @@ const Dashboard = () => {
                         )}
                         args={[store.sublevels]}
                       />
-                      
                     </Stack>
                   </GridItem>
                   <GridItem rowSpan={2} bg="gray.200">
@@ -642,105 +725,97 @@ const Dashboard = () => {
               </GridItem>
             </Grid>
           </GridItem>
-          <GridItem colSpan={12} bg={bg}>
-            <HStack>
-              <Flex
-                flex={1}
-                w="100%"
-                h="100%"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <Marquee pauseOnHover speed={100}>
-                  <HStack h="100%" w="100%">
-                    <SingleValue
-                      processor={processSingleRowValue}
-                      direction="row"
-                      indicator={mainDashboard.screened(
-                        store.selectedUnits,
-                        store.period[0].format("YYYY-MM-DD"),
-                        store.period[1].format("YYYY-MM-DD"),
-                        store.ougroups
-                      )}
-                      title="Number Screened"
-                      color="darkgreen"
-                    />
-                    <SingleValue
-                      processor={processSingleValue}
-                      direction="row"
-                      indicator={mainDashboard.screened_with_covid_symptoms(
-                        store.selectedUnits,
-                        store.period[0].format("YYYY-MM-DD"),
-                        store.period[1].format("YYYY-MM-DD"),
-                        store.ougroups
-                      )}
-                      title="Number with Symptoms"
-                      color="red"
-                    />
-                    <SingleValue
-                      processor={processSingleRowValue}
-                      direction="row"
-                      indicator={mainDashboard.no_referred_testing(
-                        store.selectedUnits,
-                        store.period[0].format("YYYY-MM-DD"),
-                        store.period[1].format("YYYY-MM-DD"),
-                        store.ougroups
-                      )}
-                      title="Number referred for testing"
-                      color="darkgreen"
-                    />
-                    <SingleValue
-                      processor={processSingleRowValue}
-                      direction="row"
-                      indicator={mainDashboard.no_isolated_at_school(
-                        store.selectedUnits,
-                        store.period[0].format("YYYY-MM-DD"),
-                        store.period[1].format("YYYY-MM-DD"),
-                        store.ougroups
-                      )}
-                      title="Number Isolated at School"
-                      color="goldenrod"
-                    />
-                    <SingleValue
-                      processor={processSingleValue}
-                      direction="row"
-                      indicator={mainDashboard.number_tested_positive(
-                        store.selectedUnits,
-                        store.period[0].format("YYYY-MM-DD"),
-                        store.period[1].format("YYYY-MM-DD"),
-                        store.ougroups
-                      )}
-                      title="No. Reported positive"
-                      color="red"
-                    />
-                    <SingleValue
-                      processor={processSingleRowValue}
-                      direction="row"
-                      indicator={mainDashboard.cases_manages_from_school(
-                        store.selectedUnits,
-                        store.period[0].format("YYYY-MM-DD"),
-                        store.period[1].format("YYYY-MM-DD"),
-                        store.ougroups
-                      )}
-                      title="Covid Cases Managed from school"
-                      color="red"
-                    />
-                  </HStack>
-                </Marquee>
-                <Box>
-                  <Image
-                    src="https://raw.githubusercontent.com/HISP-Uganda/covid-dashboard/master/src/images/logo.png"
-                    alt="Ministry of Health"
-                    w="100%"
-                    maxWidth="110px"
-                    h="auto"
+          <GridItem colSpan={12} bg={bg} justifyItems="center" w="100%">
+            <Flex flex={1} alignItems="center" justifyContent="center">
+              <Marquee pauseOnHover speed={100}>
+                <HStack h="100%" w="100%">
+                <SingleValue
+                        processor={processSingleValuePercentage}
+                        direction="row"
+                        indicator={mainDashboard.positivityRate(
+                          store.selectedUnits,
+                          store.period[0].format("YYYY-MM-DD"),
+                          store.period[1].format("YYYY-MM-DD"),
+                          store.ougroups
+                        )}
+                        postfix="%"
+                        title="Positivity Rate"
+                      />
+                  <SingleValue
+                    processor={processSingleValue}
+                    direction="row"
+                    indicator={mainDashboard.screened_with_covid_symptoms(
+                      store.selectedUnits,
+                      store.period[0].format("YYYY-MM-DD"),
+                      store.period[1].format("YYYY-MM-DD"),
+                      store.ougroups
+                    )}
+                    title="Number with Symptoms"
+                    color="red"
                   />
-                </Box>
-              </Flex>
-            </HStack>
+                  <SingleValue
+                    processor={processSingleRowValue}
+                    direction="row"
+                    indicator={mainDashboard.no_referred_testing(
+                      store.selectedUnits,
+                      store.period[0].format("YYYY-MM-DD"),
+                      store.period[1].format("YYYY-MM-DD"),
+                      store.ougroups
+                    )}
+                    title="Number referred for testing"
+                    color="darkgreen"
+                  />
+                  <SingleValue
+                    processor={processSingleRowValue}
+                    direction="row"
+                    indicator={mainDashboard.no_isolated_at_school(
+                      store.selectedUnits,
+                      store.period[0].format("YYYY-MM-DD"),
+                      store.period[1].format("YYYY-MM-DD"),
+                      store.ougroups
+                    )}
+                    title="Number Isolated at School"
+                    color="goldenrod"
+                  />
+                  <SingleValue
+                    processor={processSingleValue}
+                    direction="row"
+                    indicator={mainDashboard.number_tested_positive(
+                      store.selectedUnits,
+                      store.period[0].format("YYYY-MM-DD"),
+                      store.period[1].format("YYYY-MM-DD"),
+                      store.ougroups
+                    )}
+                    title="No. Reported positive"
+                    color="red"
+                  />
+                  <SingleValue
+                    processor={processSingleRowValue}
+                    direction="row"
+                    indicator={mainDashboard.cases_manages_from_school(
+                      store.selectedUnits,
+                      store.period[0].format("YYYY-MM-DD"),
+                      store.period[1].format("YYYY-MM-DD"),
+                      store.ougroups
+                    )}
+                    title="Covid Cases Managed from school"
+                    color="red"
+                  />
+                </HStack>
+              </Marquee>
+              <Box>
+                <Image
+                  src="https://raw.githubusercontent.com/HISP-Uganda/covid-dashboard/master/src/images/logo.png"
+                  alt="Ministry of Health"
+                  w="100%"
+                  maxWidth="110px"
+                  h="auto"
+                />
+              </Box>
+            </Flex>
           </GridItem>
         </Grid>
-      </Box>
+      </Stack>
     </FullScreen>
   );
 };

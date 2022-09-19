@@ -21,9 +21,8 @@ import { mainDashboard } from "../stores/Indicators";
 import {
   processSingleValue,
   processReportingPercentage,
-  processSingleValueTest,
 } from "../stores/ProcessData";
-import { useOrganizationSubLevel } from "../stores/Queries";
+import "../style.css"
 
 const LeagueTable = () => {
   const store = useStore($store);
@@ -40,10 +39,11 @@ const LeagueTable = () => {
           buttonText="Download as XLS"
         />
       </Button>
-      <Box overflowY="auto" maxHeight="530px" display="flex">
-        <Flex alignContent="right"> </Flex>
+      <Flex alignContent="center"> 
+      <Box borderColor='tomato' height="500" overflowX='scroll'  overflowY='scroll' >
+        
 
-        <Table variant="striped" colorScheme="teal" size="sm" id="table-to-xls">
+        <Table variant="striped" colorScheme="teal" size="sm" id="table-to-xls" overflow="5px" >
           <Thead>
             <Tr>
               <Th>Organisation</Th>
@@ -90,7 +90,9 @@ const LeagueTable = () => {
                     indicator={mainDashboard.registered_reporters(
                       parseInt(store.selectedLevel, 10) + 1,
                       ou.id,
-                      store.ougroups
+                      store.ougroups,
+                      store.period[0].format("YYYY-MM-DD"),
+                      store.period[1].format("YYYY-MM-DD"),
                     )}
                     color="dodgerblue"
                   />
@@ -140,7 +142,9 @@ const LeagueTable = () => {
             ))}
           </Tbody>
         </Table>
+        
       </Box>
+      </Flex>
     </>
   );
 };

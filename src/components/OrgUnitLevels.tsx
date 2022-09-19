@@ -44,6 +44,8 @@ export const OrgUnitLevels = () => {
           value={store.selectedLevel}
           onChange={onOuChange}
         >
+
+        {<Option>Select Org Unit Level</Option>}
           {data.organisationUnitLevels.map((item: any) => (
             <Option key={item.id} value={String(item.level)}>
               {item.name}

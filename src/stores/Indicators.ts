@@ -39,6 +39,7 @@ export const mainDashboard: { [key: string]: func } = {
       numerator: {
         sqlView: "Ks3uLn0bb17",
         parameters: {parent,dx: "HwcoAIH8yOC", startdate, enddate, ougroups},
+        
       },
       denominator: {
         sqlView: "SebGxVV33Vn",
@@ -58,6 +59,36 @@ export const mainDashboard: { [key: string]: func } = {
       }
     }
   },
+  positivityRate: (parent, startdate, enddate, ougroups)=>{
+    return {
+      numerator: {
+        sqlView: "Ks3uLn0bb17",
+        parameters: {parent,dx: "mGk4R6i1tz9", startdate, enddate, ougroups},
+      },
+      denominator: {
+        // sqlView: "Ks3uLn0bb17",
+        // parameters: { parent, dx: "HwcoAIH8yOC", startdate, enddate, ougroups },
+        sqlView: "SebGxVV33Vn",
+        parameters: {
+          dx: "wTV4OWOfT67",
+          parent, startdate, enddate, ougroups
+        },
+      }
+    }
+  },
+  cumulativePositivityRate: (parent, startdate, enddate, ougroups)=>{
+    return {
+      numerator: {
+        sqlView: "ksZ8C94batE",
+        parameters: {parent,dx: "mGk4R6i1tz9", startdate, enddate, ougroups},
+      },
+      denominator: {
+        sqlView: "ksZ8C94batE",
+        parameters: { parent, dx: "HwcoAIH8yOC", startdate, enddate, ougroups },
+      }
+    }
+  },
+  
   isolated_at_school_symptoms: (parent, startdate, enddate, ougroups) => {
     return {
       numerator: {
@@ -419,8 +450,36 @@ export const mainDashboard: { [key: string]: func } = {
     return {
       numerator: {
         sqlView: "ksZ8C94batE",
+        parameters: {dx: "mGk4R6i1tz9", parent, startdate, enddate, ougroups
+        },
+      },
+      denominator: {
+        sqlView: "fepCqYMstWu",
+        parameters: {},
+      },
+    }
+  },
+
+  // cumulative_positive : (parent,dx,part, startdate, enddate) => {
+  //   return {
+  //     numerator: {
+  //       sqlView: "fcHSbMudC2D",
+  //       parameters: {
+  //         parent,dx,part, startdate, enddate
+  //       },
+  //     },
+  //     denominator: {
+  //       sqlView: "fepCqYMstWu",  
+  //       parameters: {},
+  //     },
+  //   }
+  // },
+  cumulativeReferredForTesting : (parent, startdate, enddate, ougroups) => { 
+    return {
+      numerator: {
+        sqlView: "ksZ8C94batE",
         parameters: {
-          dx: "mGk4R6i1tz9",
+          dx: "HwcoAIH8yOC",
           parent, startdate, enddate, ougroups
         },
       },
@@ -505,7 +564,7 @@ export const mainDashboard: { [key: string]: func } = {
       },
       denominator: {
         sqlView: "nUudONuOHVi",
-        parameters: { parent, ougroups},
+        parameters: { parent, ougroups, startdate, enddate},
       },
     };
   },
@@ -517,7 +576,7 @@ export const mainDashboard: { [key: string]: func } = {
       },
       denominator: {
         sqlView: "nUudONuOHVi",
-        parameters: { parent, ougroups},
+        parameters: { parent, ougroups, startdate, enddate},
       },
     };
   },
@@ -653,12 +712,12 @@ export const mainDashboard: { [key: string]: func } = {
     }
   },
 
-  registered_reporters : (part, parent, ougroups) => {
+  registered_reporters : ( part, parent, ougroups, startdate, enddate) => {
     return {
       numerator: {
         sqlView: "nUudONuOHVi",
         parameters: {
-          part,parent, ougroups
+          part, parent, ougroups, startdate, enddate
         },
       },
       denominator: {
@@ -666,13 +725,15 @@ export const mainDashboard: { [key: string]: func } = {
         parameters: {},
       },
     }
-  },
-  registered_reporters1 : (parent, ougroups) => {
+  }, 
+  //select reporters_at_school_level('${parent}', '${ougroups}', '${startdate}', '${enddate}')
+  //('KJPN4PduBWe', 'crk61XNeGSo')
+  registered_reporters1 : (parent, ougroups, startdate, enddate) => {
     return {
       numerator: {
         sqlView: "nUudONuOHVi",
         parameters: {
-          parent, ougroups
+          parent, ougroups, startdate, enddate
         },
       },
       denominator: {
@@ -702,7 +763,7 @@ export const mainDashboard: { [key: string]: func } = {
       numerator: {
         sqlView: "nQcVI19bUv5",
         parameters: {
-          part, parent, ougroups
+          part, parent, ougroups, 
         },
       },
       denominator: {
@@ -711,12 +772,12 @@ export const mainDashboard: { [key: string]: func } = {
       },
     }
   },
-  UsersAtSchoolLevel : (parent, ougroups) => {
+  UsersAtSchoolLevel : (parent, ougroups, startdate, enddate) => {
     return {
       numerator: {
-        sqlView: "nQcVI19bUv5",
+        sqlView: "w70vDv7x1i9", 
         parameters: {
-          parent, ougroups
+          parent, ougroups, startdate, enddate
         },
       },
       denominator: {
@@ -741,6 +802,89 @@ export const mainDashboard: { [key: string]: func } = {
     }
   },
 
-  
+  reportingSchoolsByWeek : (parent, ougroups) => {
+    return {
+      numerator: {
+        sqlView: "Ljg3rCuIVgH",
+        parameters: {
+           parent,
+           ougroups},
+      },
+      denominator: {
+        sqlView: "fepCqYMstWu",
+        parameters: {},
+      },
+    }
+  },
+  //new Indicators
+  numberTested : (parent, startdate, enddate, ougroups) => {
+    return {
+      numerator: {
+        sqlView: "Ks3uLn0bb17",
+        parameters: {
+          dx: "wTV4OWOfT67",
+          parent, startdate, enddate, ougroups
+        },
+      },
+      denominator: {
+        sqlView: "fepCqYMstWu",
+        parameters: {},
+      },
+    }
+  },
+  casesInHomeBasedCare : (parent, startdate, enddate, ougroups) => {
+    return {
+      numerator: {
+        sqlView: "Ks3uLn0bb17",
+        parameters: {
+          dx: "uaMYBDqphbF",
+          parent, startdate, enddate, ougroups
+        },
+      },
+      denominator: {
+        sqlView: "fepCqYMstWu",
+        parameters: {},
+      },
+    }
+  },
+  casesHospitalized : (parent, startdate, enddate, ougroups) => {
+    return {
+      numerator: {
+        sqlView: "Ks3uLn0bb17",
+        parameters: {
+          dx: "Nei8SRUgg1M",
+          parent, startdate, enddate, ougroups
+        },
+      },
+      denominator: {
+        sqlView: "fepCqYMstWu",
+        parameters: {},
+      },
+    }
+  },
+  percentageTested: (parent, startdate, enddate, ougroups)=>{
+    return {
+      // numerator: {
+      //   sqlView: "ksZ8C94batE",
+      //   parameters: {parent,dx: "mGk4R6i1tz9", startdate, enddate, ougroups},
+      // },
+      
+      numerator: {
+        sqlView: "Ks3uLn0bb17",
+        parameters: {
+          dx: "wTV4OWOfT67",
+          parent, startdate, enddate, ougroups
+        },
+      },
+      denominator: {
+        sqlView: "Ks3uLn0bb17",
+        parameters: {
+          dx: "HwcoAIH8yOC",
+          parent,startdate, enddate, ougroups
+        },
+      },
+    }
+  },
   
 };
+

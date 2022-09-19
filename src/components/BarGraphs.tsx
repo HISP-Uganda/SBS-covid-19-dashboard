@@ -12,6 +12,7 @@ import { BarGraph } from "./BarGraph";
 import LeagueTable from "./LeagueTable";
 import StatisticsTable from "./StatisticsTable";
 import LeaguesTable from "./LeaguesTable";
+import React from "react";
 const BarGraphs: FC<{ yColor: string; bg: string }> = ({ yColor, bg }) => {
   const store = useStore($store);
 
@@ -28,12 +29,13 @@ const BarGraphs: FC<{ yColor: string; bg: string }> = ({ yColor, bg }) => {
       h={["auto", "auto", "100%"]}
       w="100%"
       display="flex"
-      flexDirection="column"
+      flexDirection="column" 
     >
       <TabList flexDirection={["column", "column", "row"]}>
         <Tab fontSize="lg">Reported COVID-19 positive</Tab>
         <Tab fontSize="lg">Number isolated at school</Tab>
         <Tab fontSize="lg">Schools Reporting</Tab>
+        {/* <Tab fontSize="lg">Schools Reporting Weekly</Tab> */}
         <Tab fontSize="lg">League Table</Tab>
         <Tab fontSize="lg">Statistics Table</Tab>
       </TabList>
@@ -78,12 +80,26 @@ const BarGraphs: FC<{ yColor: string; bg: string }> = ({ yColor, bg }) => {
             indicator={mainDashboard.reporting_schools(
               store.selectedUnits,
               // store.sublevel,
-              store.ougroups
+              store.ougroups 
             )}
             processor={processBarData}
             args={[store.sublevels]}
           />
         </TabPanel>
+        {/* <TabPanel p={0} m={0} h="100%" w="100%">
+          <BarGraph
+            title="Reported Positive"
+            bg={bg}
+            yColor={yColor}
+            indicator={mainDashboard.reportingSchoolsByWeek(
+              store.selectedUnits,
+              store.sublevel,
+              store.ougroups
+            )}
+            processor={processBarData}
+            args={[store.sublevels]}
+          />
+        </TabPanel> */}
         <TabPanel h="100%" w="100%" p={0} m={0}>
           <LeagueTable
           />

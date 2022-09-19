@@ -295,3 +295,76 @@ AND o.ou_groups ~ '${ougroups} group by ou';
 
 
 
+
+select count(distinct o.organisationunitid) from usermembership u 
+inner join ous_with_groups_mv o ON(o.organisationunitid  = u.organisationunitid) 
+inner join period p using (periodid)
+ where o.hierarchylevel= 7 and o.path ~ '${parent}' 
+and p.startdate between '${startdate}' and '${enddate}'
+and o.ou_groups ~ '${ougroups}';
+
+
+SELECT reporters_at_school_level('${parent}', '${ougroups}', '${startdate}', '${enddate}')
+
+-- function to query reporters at school LEVEL
+CREATE OR REPLACE FUNCTION public.reporters_at_school_level(parent text, grps text, startdate text, enddate text)
+ RETURNS bigint
+ LANGUAGE plpgsql
+AS $function$
+    DECLARE
+        retval BIGINT := 0;
+    BEGIN
+        SELECT
+            COUNT(DISTINCT userinfoid) INTO retval
+        FROM usermembership u
+        INNER JOIN ous_with_groups_mv o using(organisationunitid)
+        INNER JOIN userinfo ui using(userinfoid)
+        WHERE
+            o.hierarchylevel = 7
+            AND ui.created BETWEEN startdate::DATE AND enddate::DATE
+            AND o.path ~ parent AND o.ou_groups ~ grps;
+        RETURN retval;
+    END;
+$function$
+
+
+-- Schools having registered reporters by period 
+select count(distinct o.organisationunitid) from usermembership u 
+inner join ous_with_groups_mv o ON(o.organisationunitid  = u.organisationunitid) 
+ where o.hierarchylevel= 7 and o.path ~ '${parent}' 
+and o.ou_groups ~ '${ougroups}'
+and o.created between '${startdate}' and '${enddate}';
+
+
+--crk61XNeGSo
+--KJPN4PduBWe
+
+--Number tested positive SQL VIEW
+select sum(dv.value::INTEGER) total from datavalue dv 
+inner join dataelement de using(dataelementid)
+inner join period p using(periodid)
+inner join ous_with_groups_mv o on(o.organisationunitid  = dv.sourceid) 
+where de.uid = '${dx}' and o.path ~ '${parent}' and dv.deleted = false 
+and p.startdate between '${startdate}' and '${enddate}'
+AND o.ou_groups ~ '${ougroups}';
+
+
+--Query by 2dx
+select de.uid, split_part(path, '/', ${part}) as ou,sum(dv.value::INTEGER) total from datavalue dv 
+inner join dataelement de using(dataelementid) 
+inner join ous_with_groups_mv o on(o.organisationunitid  = dv.sourceid) 
+inner join period p using (periodid)
+where de.uid::text = any (string_to_array('${dx}', '-'))  and o.path ~ '${parent}' and dv.deleted = false 
+and p.startdate between '${startdate}' and '${enddate}'
+group by de.uid,ou;
+
+--cumulative Positive query
+select sum(dv.value::INTEGER) total from datavalue dv 
+inner join dataelement de using(dataelementid) 
+inner join period p using (periodid)
+inner join ous_with_groups_mv o on(o.organisationunitid  = dv.sourceid) 
+where de.uid = '${dx}'  and o.path ~ '${parent}' and dv.deleted = false 
+and p.startdate between '2022-01-01' and '${enddate}'
+AND o.ou_groups ~ '${ougroups}';
+
+
