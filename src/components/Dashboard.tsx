@@ -15,6 +15,7 @@ import {
   useColorModeValue,
   chakra,
   HTMLChakraProps,
+  VStack,
 } from "@chakra-ui/react";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import PieChart from "./PieChart";
@@ -182,7 +183,7 @@ const Dashboard = () => {
             boxSize="48px"
           />
           <Flex minWidth="max-content">
-            <Text fontSize="3xl" fontWeight="bold" color="red.500">
+            <Text fontSize="3xl" fontWeight="bold" color="blue.500">
               SBS COVID-19 Dashboard
             </Text>
           </Flex>
@@ -431,29 +432,29 @@ const Dashboard = () => {
                       />
                     </Box>
                     <Box w="350px">
-                    <SingleValue
-                    processor={processSingleValue}
-                    indicator={mainDashboard.numberTested(
-                      store.selectedUnits,
-                      store.period[0].format("YYYY-MM-DD"),
-                      store.period[1].format("YYYY-MM-DD"),
-                      store.ougroups
-                    )}
-                    title="Number Tested"
-                  />
+                      <SingleValue
+                        processor={processSingleValue}
+                        indicator={mainDashboard.numberTested(
+                          store.selectedUnits,
+                          store.period[0].format("YYYY-MM-DD"),
+                          store.period[1].format("YYYY-MM-DD"),
+                          store.ougroups
+                        )}
+                        title="Number Tested"
+                      />
                     </Box>
                     <Box w="350px">
-                    <SingleValue
-                    processor={processSingleValuePercentage}
-                    indicator={mainDashboard.percentage_referred_for_testing(
-                      store.selectedUnits,
-                      store.period[0].format("YYYY-MM-DD"),
-                      store.period[1].format("YYYY-MM-DD"),
-                      store.ougroups
-                    )}
-                    postfix="%"
-                    title="% Referred for testing"
-                  />
+                      <SingleValue
+                        processor={processSingleValuePercentage}
+                        indicator={mainDashboard.percentage_referred_for_testing(
+                          store.selectedUnits,
+                          store.period[0].format("YYYY-MM-DD"),
+                          store.period[1].format("YYYY-MM-DD"),
+                          store.ougroups
+                        )}
+                        postfix="%"
+                        title="% Referred for testing"
+                      />
                     </Box>
                     <Box w="350px">
                       <SingleValue
@@ -492,74 +493,69 @@ const Dashboard = () => {
                         title="C. Referred for Testing"
                       />
                     </Box> */}
-                    
                   </Flex>
                 </Stack>
               </GridItem>
 
-              <GridItem
-                rowSpan={5}
-                colSpan={5}
-                bg="white"
-                h="100%" w="100%"
-              >
+              <GridItem rowSpan={5} colSpan={5} bg="white" h="100%" w="100%">
                 <Stack spacing={0} h="100%">
-                <Flex
-                  alignItems="center"
-                  bg="gray.200"
-                  h="40px"
-                  alignContent="center"
-                  justifyItems="center"
-                >
-                  <Text
-                    pl="25px"
-                    h="20px"
-                    textTransform="uppercase"
-                    fontWeight="bold"
-                    fontSize="0.8vw"
-                    color="blue.500"
-                    isTruncated
+                  <Flex
+                    alignItems="center"
+                    bg="gray.200"
+                    h="40px"
+                    alignContent="center"
+                    justifyItems="center"
                   >
-                    PERFORMANCE BY REGION AND OVER TIME ( Last 14 Days / Weeks)
-                  </Text>
-                </Flex>
-                <BarGraphs yColor={yColor} bg={bg} />
+                    <Text
+                      pl="25px"
+                      h="20px"
+                      textTransform="uppercase"
+                      fontWeight="bold"
+                      fontSize="0.8vw"
+                      color="blue.500"
+                      isTruncated
+                    >
+                      PERFORMANCE BY REGION AND OVER TIME ( Last 14 Days /
+                      Weeks)
+                    </Text>
+                  </Flex>
+                  <BarGraphs yColor={yColor} bg={bg} />
                 </Stack>
               </GridItem>
               <GridItem rowSpan={5} bg="white" h="100%" w="100%">
                 <Stack h="100%" spacing={0}>
-                <SingleValue
-                        processor={processSingleValuePercentage}
-                        indicator={mainDashboard.percentageTested(
-                          store.selectedUnits,
-                          store.period[0].format("YYYY-MM-DD"),
-                          store.period[1].format("YYYY-MM-DD"),
-                          store.ougroups
-                        )}
-                        postfix="%"
-                        title="% Tested"
-                      />
-                <SingleValue
-                        processor={processSingleValue}
-                        indicator={mainDashboard.cumulative_positive(
-                          store.selectedUnits,
-                          store.period[0].format("YYYY-MM-DD"),
-                          store.period[1].format("YYYY-MM-DD"),
-                          store.ougroups
-                        )}
-                        title="Cum. Positives"
-                      />
-                      <SingleValue
-                        processor={processSingleValuePercentage}
-                        indicator={mainDashboard.cumulativePositivityRate(
-                          store.selectedUnits,
-                          store.period[0].format("YYYY-MM-DD"),
-                          store.period[1].format("YYYY-MM-DD"),
-                          store.ougroups
-                        )}
-                        postfix="%"
-                        title="Cum. Positivity Rate"
-                      />
+                  <SingleValue
+                    processor={processSingleValuePercentage}
+                    indicator={mainDashboard.percentageTested(
+                      store.selectedUnits,
+                      store.period[0].format("YYYY-MM-DD"),
+                      store.period[1].format("YYYY-MM-DD"),
+                      store.ougroups
+                    )}
+                    postfix="%"
+                    title="% Tested"
+                  />
+                  <SingleValue
+                    processor={processSingleValue}
+                    indicator={mainDashboard.cumulative_positive(
+                      store.selectedUnits,
+                      store.period[0].format("YYYY-MM-DD"),
+                      store.period[1].format("YYYY-MM-DD"),
+                      store.ougroups
+                    )}
+                    title="Cum. Positives"
+                  />
+                  <SingleValue
+                    processor={processSingleValuePercentage}
+                    indicator={mainDashboard.cumulativePositivityRate(
+                      store.selectedUnits,
+                      store.period[0].format("YYYY-MM-DD"),
+                      store.period[1].format("YYYY-MM-DD"),
+                      store.ougroups
+                    )}
+                    postfix="%"
+                    title="Cum. Positivity Rate"
+                  />
                   <Flex
                     alignItems="center"
                     bg="gray.200"
@@ -576,8 +572,7 @@ const Dashboard = () => {
                       fontSize="0.7vw"
                       color="blue.500"
                     >
-                      Care <br />(
-                      {store.period[0].format("YYYY-MM-DD")} -{" "}
+                      Care <br />({store.period[0].format("YYYY-MM-DD")} -{" "}
                       {store.period[1].format("YYYY-MM-DD")})
                     </Text>
                   </Flex>
@@ -654,7 +649,7 @@ const Dashboard = () => {
                           color="blue.500"
                           isTruncated
                         >
-                          Suspects Isolated at School
+                          # Referred for Testing by region
                         </Text>
                       </Flex>
 
@@ -689,7 +684,7 @@ const Dashboard = () => {
                           color="blue.500"
                           isTruncated
                         >
-                          # with Symptoms by Region
+                          Ebola Related
                         </Text>
                       </Flex>
                       {/* <SpiderChart
@@ -702,20 +697,48 @@ const Dashboard = () => {
                         )}
                         args={[store.sublevels]}
                       /> */}
-                      <BarGraph
-                        title="# with Symptoms by Region"
-                        bg={bg}
-                        yColor={yColor}
-                        indicator={mainDashboard.number_with_symptoms_bar(
-                          store.selectedUnits,
-                          store.sublevel,
-                          store.period[0].format("YYYY-MM-DD"),
-                          store.period[1].format("YYYY-MM-DD"),
-                          store.ougroups
-                        )}
-                        processor={processTestData}
-                        args={[store.sublevels]}
-                      />
+                      <VStack
+                        justifyItems="space-around"
+                        justifyContent="space-around"
+                        w="100%"
+                        h="100%"
+                        flex={1}
+                        bg="white"
+                      >
+                        <SingleValue
+                          processor={processSingleValue}
+                          indicator={mainDashboard.absentFromSchool(
+                            store.selectedUnits,
+                            store.period[0].format("YYYY-MM-DD"),
+                            store.period[1].format("YYYY-MM-DD"),
+                            store.ougroups,
+                          )}
+                          title="No. Absent From School"
+                          color="blue"
+                        />
+                        <SingleValue
+                          processor={processSingleValue}
+                          indicator={mainDashboard.evdRelatedSymptoms(
+                            store.selectedUnits,
+                            store.period[0].format("YYYY-MM-DD"),
+                            store.period[1].format("YYYY-MM-DD"),
+                            store.ougroups,
+                          )}
+                          title="No. with EVD Related Symptoms"
+                          color="dodgerblue"
+                        />
+                        <SingleValue
+                          processor={processSingleValue}
+                          indicator={mainDashboard.withFevers(
+                            store.selectedUnits,
+                            store.period[0].format("YYYY-MM-DD"),
+                            store.period[1].format("YYYY-MM-DD"),
+                            store.ougroups,
+                          )}
+                          title="No. with Fevers"
+                          color="green"
+                        />
+                      </VStack>
                     </Stack>
                   </GridItem>
                 </Grid>
@@ -729,18 +752,18 @@ const Dashboard = () => {
             <Flex flex={1} alignItems="center" justifyContent="center">
               <Marquee pauseOnHover speed={100}>
                 <HStack h="100%" w="100%">
-                <SingleValue
-                        processor={processSingleValuePercentage}
-                        direction="row"
-                        indicator={mainDashboard.positivityRate(
-                          store.selectedUnits,
-                          store.period[0].format("YYYY-MM-DD"),
-                          store.period[1].format("YYYY-MM-DD"),
-                          store.ougroups
-                        )}
-                        postfix="%"
-                        title="Positivity Rate"
-                      />
+                  <SingleValue
+                    processor={processSingleValuePercentage}
+                    direction="row"
+                    indicator={mainDashboard.positivityRate(
+                      store.selectedUnits,
+                      store.period[0].format("YYYY-MM-DD"),
+                      store.period[1].format("YYYY-MM-DD"),
+                      store.ougroups
+                    )}
+                    postfix="%"
+                    title="Positivity Rate"
+                  />
                   <SingleValue
                     processor={processSingleValue}
                     direction="row"

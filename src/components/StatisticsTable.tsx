@@ -12,7 +12,7 @@ const StatisticsTable = () => {
   const { isLoading, isError, isSuccess, error, data } = useSqlView(
     mainDashboard.registeredReportersLeagueTable(
       store.selectedUnits,
-      "l2CJ4fYySx9-HwcoAIH8yOC-rrvYimAHvV7-mGk4R6i1tz9-oC2I44e31Pu",
+      "l2CJ4fYySx9-HwcoAIH8yOC-wTV4OWOfT67-mGk4R6i1tz9-oC2I44e31Pu-uaMYBDqphbF-Nei8SRUgg1M",
       parseInt(store.selectedLevel, 10) + 1,
       // console.log(parseInt(store.selectedLevel, 10) + 1),
       store.period[0].format("YYYY-MM-DD"),

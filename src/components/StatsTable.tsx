@@ -9,7 +9,7 @@ import React from "react";
 const StatsTable = ({ data }: { data: any }) => {
   const store = useStore($store);
   const elements: string[] = String(
-    "l2CJ4fYySx9-HwcoAIH8yOC-rrvYimAHvV7-mGk4R6i1tz9-oC2I44e31Pu"
+    "l2CJ4fYySx9-HwcoAIH8yOC-wTV4OWOfT67-mGk4R6i1tz9-oC2I44e31Pu-uaMYBDqphbF-Nei8SRUgg1M"
   ).split("-");
   const values = fromPairs(
     data.numerators.map((row: any) => [`${row[1]}${row[0]}`, row[2]])
@@ -42,9 +42,11 @@ const StatsTable = ({ data }: { data: any }) => {
             {/* <Th>No. Screened</Th> */}
             <Th>No. With Symptoms</Th>
             <Th>Referred for Testing</Th>
-            <Th>Isolated at School</Th>
+            <Th>Number Tested</Th>
             <Th>No. Tested +ve</Th>
             <Th>Managed from School</Th>
+            <Th>Home Based Care</Th>
+            <Th>Cases Hospitalized</Th>
           </Tr>
         </Thead>
         <Tbody>

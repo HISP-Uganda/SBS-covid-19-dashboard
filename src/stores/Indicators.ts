@@ -510,7 +510,7 @@ export const mainDashboard: { [key: string]: func } = {
       numerator: {
         sqlView: "N3JQAd7YW6g", 
         parameters: {
-          dx: "rrvYimAHvV7",
+          dx: "HwcoAIH8yOC",
           parent,
           part , startdate, enddate, ougroups
         },
@@ -526,7 +526,7 @@ export const mainDashboard: { [key: string]: func } = {
       numerator: {
         sqlView: "N3JQAd7YW6g", 
         parameters: {
-          dx: "rrvYimAHvV7",
+          dx: "l2CJ4fYySx9",
           parent,
           part , startdate, enddate, ougroups
         },
@@ -575,8 +575,8 @@ export const mainDashboard: { [key: string]: func } = {
         parameters: {parent, startdate, enddate, ougroups},
       },
       denominator: {
-        sqlView: "nUudONuOHVi",
-        parameters: { parent, ougroups, startdate, enddate},
+        sqlView: "r4kqyThE1Jy",
+        parameters: { parent, ougroups},
       },
     };
   },
@@ -882,6 +882,51 @@ export const mainDashboard: { [key: string]: func } = {
           dx: "HwcoAIH8yOC",
           parent,startdate, enddate, ougroups
         },
+      },
+    }
+  },
+  absentFromSchool : (parent, startdate, enddate, ougroups) => {
+    return {
+      numerator: {
+        sqlView: "Ks3uLn0bb17",
+        parameters: {
+          dx: "GW0TRbgghe3",
+          parent, startdate, enddate, ougroups
+        },
+      },
+      denominator: {
+        sqlView: "fepCqYMstWu",
+        parameters: {},
+      },
+    }
+  },
+  evdRelatedSymptoms : (parent, startdate, enddate, ougroups) => {
+    return {
+      numerator: {
+        sqlView: "Ks3uLn0bb17",
+        parameters: {
+          dx: "cBhp5x6VYbS",
+          parent, startdate, enddate, ougroups
+        },
+      },
+      denominator: {
+        sqlView: "fepCqYMstWu",
+        parameters: {},
+      },
+    }
+  },
+  withFevers : (parent, startdate, enddate, ougroups) => {
+    return {
+      numerator: {
+        sqlView: "Ks3uLn0bb17",
+        parameters: {
+          dx: "Sk7GOkQzHMT",
+          parent, startdate, enddate, ougroups
+        },
+      },
+      denominator: {
+        sqlView: "fepCqYMstWu",
+        parameters: {},
       },
     }
   },

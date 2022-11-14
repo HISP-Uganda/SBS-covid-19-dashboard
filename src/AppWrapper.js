@@ -13,7 +13,7 @@ const queryClient = new QueryClient({
 const MyApp = () => (
   <QueryClientProvider client={queryClient}>
     <App />
-    {/* <ReactQueryDevtools initialIsOpen={true}/> */}
+    <ReactQueryDevtools initialIsOpen={true}/>
   </QueryClientProvider>
 );
 export default MyApp;
